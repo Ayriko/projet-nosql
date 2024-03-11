@@ -10,7 +10,6 @@ import MenuItem from '@mui/material/MenuItem';
 import Menu from '@mui/material/Menu';
 import SearchIcon from '@mui/icons-material/Search';
 import AccountCircle from '@mui/icons-material/AccountCircle';
-import MailIcon from '@mui/icons-material/Mail';
 import NotificationsIcon from '@mui/icons-material/Notifications';
 import { Link } from 'react-router-dom';
 
@@ -116,12 +115,6 @@ export default function Navbar() {
             onClose={handleMobileMenuClose}
         >
             <MenuItem>
-                <IconButton size="large" aria-label="show mails" color="inherit">
-                    <MailIcon />
-                </IconButton>
-                <p>Messages</p>
-            </MenuItem>
-            <MenuItem>
                 <IconButton
                     size="large"
                     aria-label="show notifications"
@@ -169,9 +162,6 @@ export default function Navbar() {
                     </Search>
                     <Box sx={{ flexGrow: 1 }} />
                     <Box sx={{ display: { xs: 'none', md: 'flex' } }}>
-                        <IconButton size="large" aria-label="show mails" color="inherit">
-                            <MailIcon />
-                        </IconButton>
                         <IconButton
                             size="large"
                             aria-label="show notifications"

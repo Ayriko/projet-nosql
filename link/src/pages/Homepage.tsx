@@ -2,6 +2,7 @@ import React from 'react';
 import Navbar from "../components/Navbar.tsx";
 import {Stack} from "@mui/material";
 import Post from '../components/Post.tsx';
+import TextEditor from '../components/TextEditor.tsx';
 
 function Homepage(): React.JSX.Element {
     const [users, setUsers] = useState([]);
@@ -29,6 +30,7 @@ function Homepage(): React.JSX.Element {
                 spacing={3}
                 sx={{ marginTop: '2rem' }}
             >
+                <TextEditor />
                 <Post />
                 <Post />
                 <Post />
