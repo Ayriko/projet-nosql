@@ -1,9 +1,9 @@
 import React from 'react';
-import LoginComponent from "../components/SignIn";
+import SignIn from "../components/SignIn";
 
 function Login(): React.JSX.Element {
     return (
-        <LoginComponent />
+        <SignIn />
     );
 }
 
