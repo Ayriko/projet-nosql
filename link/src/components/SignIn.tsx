@@ -91,6 +91,14 @@ export default function SignIn() {
                         >
                             Sign In
                         </Button>
+                        <Button
+                            type="reset"
+                            fullWidth
+                            variant="contained"
+                            sx={{ mt: 0, mb: 2 }}
+                        >
+                            <RLink to={"/"}>Cancel</RLink>
+                        </Button>
                         <Grid container>
                             <Grid item xs>
                                 <Link href="#" variant="body2">

@@ -7,10 +7,10 @@
     <list default="true" id="8aaec906-6bfe-48a3-8480-ab29cb32f21d" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/link/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/link/index.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/link/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/link/package-lock.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/link/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/link/package.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/link/src/App.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/link/src/App.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/link/src/main.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/link/src/main.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/link/src/config/Router.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/link/src/config/Router.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/link/src/index.css" beforeDir="false" afterPath="$PROJECT_DIR$/link/src/index.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/link/src/pages/Homepage.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/link/src/pages/Homepage.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/link/src/pages/Login.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/link/src/pages/Login.tsx" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -38,21 +38,22 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "RunOnceActivity.OpenProjectViewOnStart": "true",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "git-widget-placeholder": "feat/react-setup",
-    "last_opened_file_path": "/home/ayriko/Bureau/nosql/projet-nosql",
-    "node.js.detected.package.eslint": "true",
-    "node.js.detected.package.tslint": "true",
-    "node.js.selected.package.eslint": "(autodetect)",
-    "node.js.selected.package.tslint": "(autodetect)",
-    "nodejs_package_manager_path": "npm",
-    "ts.external.directory.path": "/home/ayriko/Bureau/nosql/projet-nosql/link/node_modules/typescript/lib",
-    "vue.rearranger.settings.migration": "true"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;ReactCreateComponentLastSelected&quot;: &quot;functionDeclarationComponent&quot;,
+    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;feature/home&quot;,
+    &quot;last_opened_file_path&quot;: &quot;/home/ayriko/Bureau/nosql/projet-nosql&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;ts.external.directory.path&quot;: &quot;/home/ayriko/Bureau/nosql/projet-nosql/link/node_modules/typescript/lib&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   }
-}]]></component>
+}</component>
   <component name="ReactDesignerToolWindowState">
     <option name="myId2Visible">
       <map>
@@ -72,6 +73,7 @@
       <updated>1709548660763</updated>
       <workItem from="1709548661844" duration="5509000" />
       <workItem from="1709557429425" duration="2573000" />
+      <workItem from="1710161866041" duration="877000" />
     </task>
     <servers />
   </component>

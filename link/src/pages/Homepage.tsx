@@ -1,11 +1,24 @@
 import React from 'react';
-import {Link} from "react-router-dom";
+import Navbar from "../components/Navbar.tsx";
+import {Stack} from "@mui/material";
+import Post from '../components/Post.tsx';
 
 function Homepage(): React.JSX.Element {
     return (
-        <div>
-            <Link to={"/login"}>Se connecter</Link>
-        </div>
+        <>
+            <Navbar/>
+            <Stack
+                direction="column"
+                justifyContent="flex-start"
+                alignItems="center"
+                spacing={3}
+                sx={{ marginTop: '2rem' }}
+            >
+                <Post />
+                <Post />
+                <Post />
+            </Stack>
+        </>
     );
 }
 
