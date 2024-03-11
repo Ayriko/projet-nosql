@@ -4,6 +4,21 @@ import {Stack} from "@mui/material";
 import Post from '../components/Post.tsx';
 
 function Homepage(): React.JSX.Element {
+    const [users, setUsers] = useState([]);
+
+    useEffect(() => {
+        const fetchUsers = async () => {
+            try {
+                const fetchedUsers = await getUsers();
+                setUsers(fetchedUsers);
+            } catch (error) {
+                console.error("Erreur lors de la récupération des utilisateurs :", error);
+            }
+        };
+        fetchUsers();
+    }, []);
+
+
     return (
         <>
             <Navbar/>
