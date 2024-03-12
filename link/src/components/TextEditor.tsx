@@ -1,39 +1,51 @@
 import React from 'react';
-import { Button, TextareaAutosize, Divider } from '@mui/material';
+import { Button,Typography, Avatar } from '@mui/material';
+import { createPost } from '../client/client';
+import PostType from '../models/post';
 
 function TextEditor(): React.JSX.Element {
-    function handleSubmit(e) {
-        // Prevent the browser from reloading the page
-        e.preventDefault();
+    const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
+        event.preventDefault();
+        const form = event.currentTarget;
+        const postContent = form.elements.namedItem('postContent') as HTMLInputElement;
 
-        // Read the form data
-        const form = e.target;
-        const formData = new FormData(form);
-
-        // You can pass formData as a fetch body directly:
-        // modifier le fetch pour notre server + ajouter user
-        fetch('/some-api', { method: form.method, body: formData });
-
-        // Or you can work with it as a plain object:
-        const formJson = Object.fromEntries(formData.entries());
-        console.log(formJson);
+        const newPost : PostType = {
+            id: Math.random().toString(36).substr(2, 9),
+            author: '65ef0ca6a2f5fd42b4e4be75',
+            date: new Date().toDateString(),  
+            content: postContent.value,
+            likes: 0,
+            comments: []
+        }
+        createPost(newPost);
+        postContent.value = "";
     }
+ 
+
+
+    const initialUsername = "O";
 
     return (
-        <form method="post" onSubmit={handleSubmit}>
-            <label style={{ display: 'block', marginBottom: '8px' }}>
-                New post:
-            </label>
-            <TextareaAutosize
+        <div style={{background:"black", width:"800px", border: '0.5px solid grey'}}>
+        <form method="post" onSubmit={handleSubmit} style={{display:'flex', flexDirection:'row', justifyContent: 'center',alignItems: 'center' }} >
+            <Avatar sx={{ bgcolor: 'white', padding:'10px', margin:'5px'}} aria-label="recipe">
+                <Typography variant="subtitle2" color="black">
+                {initialUsername}
+                </Typography>
+            </Avatar>
+            <textarea
                 name="postContent"
-                defaultValue=""
-                minRows={4}
-                style={{ width: '100%', minWidth: '300px', height: '15px', padding: '8px', borderRadius: '5px', border: '1px solid #ccc' }}
+                placeholder='What is happening ?'
+                style={{
+                width:"100%", height:"50px", border: 'none', resize: 'none', background: 'black', padding: '10px', color: 'white',marginTop: '10px', marginBottom: '10px'}}
             />
-            <Divider sx={{ margin: '10px 0' }} />
-            <Button type="reset" variant="outlined" sx={{ marginRight: '10px' }}>Reset edits</Button>
-            <Button type="submit" variant="contained" color="primary">Save post</Button>
+            <Button type="submit" variant="contained" color="primary" sx={{justifyContent: 'flex-end', borderRadius: '30px', marginRight: '5px', marginLeft: '5px' }}>
+            <Typography color="white" sx={{fontSize:'12px'}}>
+                post
+            </Typography>
+            </Button>
         </form>
+        </div>
     );
 }
 
