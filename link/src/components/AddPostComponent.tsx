@@ -3,7 +3,7 @@ import { Button,Typography, Avatar } from '@mui/material';
 import { createPost } from '../client/client';
 import PostType from '../models/post';
 
-function TextEditor(): React.JSX.Element {
+function AddPostComponent(): React.JSX.Element {
     const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
         const form = event.currentTarget;
@@ -49,4 +49,4 @@ function TextEditor(): React.JSX.Element {
     );
 }
 
-export default TextEditor;
+export default AddPostComponent;

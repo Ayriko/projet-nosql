@@ -4,7 +4,7 @@ import {Stack} from "@mui/material";
 import { getPosts } from '../client/client.ts';
 import PostType  from '../models/post.ts';
 import PostComponent from '../components/PostComponent.tsx';
-import TextEditor from '../components/TextEditor.tsx';
+import AddPostComponent from '../components/AddPostComponent.tsx';
 
 
 function Homepage(): React.JSX.Element {
@@ -32,7 +32,7 @@ function Homepage(): React.JSX.Element {
                 spacing={3}
                 sx={{ marginTop: '2rem' }}
             >
-            <TextEditor/>
+            <AddPostComponent/>
                 {
                     posts.slice().reverse().map((post: PostType, index : number) => {
                         return (

@@ -1,3 +1,4 @@
+import CommentType from "../models/comment";
 import PostType from "../models/post";
 import UserType from "../models/user";
 
@@ -40,7 +41,62 @@ const createPost = async (post: PostType) => {
   });
 }
 
+const createComment = async (comment: CommentType) => {
+  console.log(comment);
+  const response  = await fetch('http://localhost:3000/comment', {
+    method: 'POST',
+    body: JSON.stringify({
+      author: comment.author,
+      content: comment.content,
+      date: comment.date,
+      postId: comment.postId
+   }),
+   headers: {
+    'Content-type': 'application/json; charset=UTF-8'
+  },
+  });
+  const createdComment = await response.json();
+
+  console.log(createdComment);
+
+  try {
+    await addCommentToPost(createdComment._id, createdComment.postId);
+  } catch {
+    console.log(Error);
+  }
+  
+}
+
+const addCommentToPost = async (commentId: string, postId : string) => {
+  await fetch(`http://localhost:3000/addcommenttopost/${postId}`, {
+    method: 'POST',
+    body: JSON.stringify({
+      commentId: commentId
+   }),
+   headers: {
+    'Content-type': 'application/json; charset=UTF-8'
+  },
+  })
+}
+
+const getCommentById = async (id: string) => {
+  const response = await fetch(`http://localhost:3000/comment/${id}`);
+  const commentData = await response.json();
+  const comment : CommentType = {
+    id: commentData.id,
+    author: commentData.author,
+    date: commentData.date,
+    content: commentData.content,
+    postId: commentData.postId
+  }
+  return comment;
+
+}
 
 
-export { getUsers, getUserById, getPosts, createPost };
+
+
+
+
+export { getUsers, getUserById, getPosts, createPost, createComment, getCommentById };
 

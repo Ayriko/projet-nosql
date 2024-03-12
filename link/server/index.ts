@@ -2,6 +2,7 @@ import express from 'express';
 import Post from './models/post';
 import cors from 'cors';
 import User from './models/user';
+import Comment from './models/comment';
 
 
 
@@ -18,7 +19,7 @@ app.get('/', (_, res) => {
 app.get('/users', (_, res) => {
   User.find()
     .then((users) => {
-      //console.log('Users:', users);
+      console.log('Users:', users);
       res.send(users);
     })
     .catch((error) => console.error('Error fetching users:', error));
@@ -40,10 +41,20 @@ app.get('/user/:id', (req, res) => {
 app.get('/posts', (_, res) => {
   Post.find()
     .then((posts) => {
-      //console.log('Posts:', posts);
+      console.log('Posts:', posts);
       res.send(posts);
     })
     .catch((error) => console.error('Error fetching posts:', error));
+});
+
+app.get('/post/:id', (req, res) => {
+  const id = req.params.id;
+  Post.findById(id)
+    .then((post) => {
+      console.log('Post:', post);
+      res.send(post);
+    })
+    .catch((error) => console.error('Error fetching post:', error));
 });
 
 app.post('/post', (req, res) => {
@@ -62,7 +73,44 @@ app.post('/post', (req, res) => {
     .catch((error) => console.error('Error creating post:', error));
 });
 
+app.post('/addcommenttopost/:id', async (req, res) =>  {
+    const id = req.params.id;
+    await Post.findOneAndUpdate(
+      { _id: id }, 
+      {
+        $push: {"comments": req.body.commentId}
+      },
+      { new: true }
+    );
+    res.send('Comment added to post');
+});
 
+
+// COMMENTS
+app.post('/comment', (req, res) => {
+  const comment = new Comment({
+    author: req.body.author,
+    date: req.body.date,
+    content: req.body.content,
+    postId: req.body.postId
+  });
+  comment.save()
+    .then((comment) => {
+      console.log('Comment:', comment);
+      res.send(comment);
+    })
+    .catch((error) => console.error('Error creating comment:', error));
+});
+
+app.get('/comment/:id', (req, res) => {
+  const id = req.params.id;
+  Comment.findById(id)
+    .then((comment) => {
+      console.log('Comment:', comment);
+      res.send(comment);
+    })
+    .catch((error) => console.error('Error fetching comment:', error));
+});
 
 app.listen(port, () => {
   console.log(`Server running on http://localhost:${port}`);
