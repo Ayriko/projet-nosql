@@ -1,12 +1,12 @@
 import mongoose from '../db/conn';
-import User from './user';
 
 const CommentSchema = new mongoose.Schema({
-    user: User,
+    author: String,
     date : String,
+    postId : String,
     content : String,
 });
 
-const Comment = mongoose.model('Post', CommentSchema);
+const Comment = mongoose.model('Comment', CommentSchema);
 
 export default Comment;

@@ -12,12 +12,13 @@ import ChatBubbleOutlineIcon from '@mui/icons-material/ChatBubbleOutline';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
 import { Divider } from '@mui/material';
 import PostType from '../models/post';
-import dateFormatter from '../utils/dateFormatter';
 import { getUserById } from '../client/client';
 import { useEffect, useState } from 'react';
 import getFirstLetterUsername from '../utils/getFirstLetterUsername';
 import { Grid, Menu, MenuItem } from '@mui/material';
-import Comments from "./Comments.tsx";
+import CommentComponent from './CommentComponent.tsx';
+import AddCommentComponent from './AddCommentComponent.tsx';
+import getTimeAgo from '../utils/timeAgo.ts';
 
 
 export default function PostComponent({post}: {post: PostType}) {
@@ -36,7 +37,7 @@ export default function PostComponent({post}: {post: PostType}) {
             });
     }, [post.author]);
 
-    const date = dateFormatter(post.date);
+    const date = getTimeAgo(post.date);
 
    const initialUsername = getFirstLetterUsername(authorUsername);
 
@@ -54,7 +55,6 @@ export default function PostComponent({post}: {post: PostType}) {
         setAnchorEl(null);
     };
 
-    
     return (
         <Card sx={{ width: 800, margin: 'auto', background : 'black', border: '0.5px solid grey'}}>
             <CardHeader
@@ -114,13 +114,20 @@ export default function PostComponent({post}: {post: PostType}) {
             <Collapse in={expanded} timeout="auto" unmountOnExit>
                 <CardContent>
                     { post.comments.length > 0 ?
-                        <Comments />
+                        post.comments.slice().reverse().map((comment : string, index : number) => {
+                            return (
+                                <div key={index}>
+                                <CommentComponent commentId={comment} />
+                                </div>
+                            );})
                         :
                         <Typography variant="body1" color="white">
                             No comments yet
                         </Typography>
                         
                     }
+
+                     <AddCommentComponent postId={post._id}/>
                 </CardContent>
             </Collapse>
         </Card>
