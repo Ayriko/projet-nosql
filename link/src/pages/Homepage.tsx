@@ -5,6 +5,7 @@ import { getPosts } from '../client/client.ts';
 import PostType  from '../models/post.ts';
 import PostComponent from '../components/PostComponent.tsx';
 import AddPostComponent from '../components/AddPostComponent.tsx';
+import SearchResultsComponent from '../components/SearchResultsComponent.tsx';
 
 function Homepage(): React.JSX.Element {
     const [posts, setPosts] = useState([]);
@@ -21,6 +22,9 @@ function Homepage(): React.JSX.Element {
         fetchPosts();
     }, []);
 
+
+
+
     return (
         <div>
             <Navbar/>
@@ -31,11 +35,13 @@ function Homepage(): React.JSX.Element {
                 spacing={3}
                 sx={{ margin: '2rem' }}
             >
+            <SearchResultsComponent />
+                 
             <AddPostComponent/>
                 {
                     posts.slice().reverse().map((post: PostType, index : number) => {
                         return (
-                            <div key={index}>
+                            <div key={index} >
                                  <PostComponent  post={post} />
                             </div>
                         );})
