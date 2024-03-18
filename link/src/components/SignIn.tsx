@@ -8,29 +8,12 @@ import Box from '@mui/material/Box';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
-import { createTheme, ThemeProvider } from '@mui/material/styles';
+import { ThemeProvider } from '@mui/material/styles';
 import {Link as RLink, useNavigate} from "react-router-dom";
 import {useEffect} from "react";
+import theme from '../theme/theme';
 
-// Define custom theme
-const theme = createTheme({
-    palette: {
-        primary: {
-            main: '#ffffff', // white color
-        },
-        background: {
-            default: '#000000', // black color
-        },
-        text: {
-            primary: '#ffffff', // white color
-        },
-    },
-});
 
-const linkStyle = {
-    textDecoration: "none",
-    color: 'black'
-};
 
 export default function SignIn() {
     const navigate = useNavigate()
@@ -95,12 +78,12 @@ export default function SignIn() {
                             autoFocus
                             InputProps={{
                                 style: {
-                                    color: 'white', // Set text color to white
-                                    borderColor: 'white', // Set border color to white
+                                    color: 'white', 
+                                    borderColor: 'white', 
                                 },
                                 sx: {
                                     '& .MuiOutlinedInput-notchedOutline': {
-                                        borderColor: 'white !important', // Set border color to white
+                                        borderColor: 'white !important', 
                                     },
                                 },
                             }}
@@ -115,12 +98,12 @@ export default function SignIn() {
                             id="password"
                             InputProps={{
                                 style: {
-                                    color: 'white', // Set text color to white
-                                    borderColor: 'white', // Set border color to white
+                                    color: 'white', 
+                                    borderColor: 'white',
                                 },
                                 sx: {
                                     '& .MuiOutlinedInput-notchedOutline': {
-                                        borderColor: 'white !important', // Set border color to white
+                                        borderColor: 'white !important', 
                                     },
                                 },
                             }}
@@ -154,3 +137,10 @@ export default function SignIn() {
         </ThemeProvider>
     );
 }
+
+
+
+const linkStyle = {
+    textDecoration: "none",
+    color: 'black'
+};

@@ -8,29 +8,13 @@ import Box from '@mui/material/Box';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
-import { createTheme, ThemeProvider } from '@mui/material/styles';
+import {ThemeProvider } from '@mui/material/styles';
 import {Link as RLink, useNavigate} from "react-router-dom";
 import {useEffect} from "react";
+import theme from '../theme/theme';
+import { createUser } from '../client/client';
 
-// Define custom theme
-const theme = createTheme({
-    palette: {
-        primary: {
-            main: '#ffffff', // white color
-        },
-        background: {
-            default: '#000000', // black color
-        },
-        text: {
-            primary: '#ffffff', // white color
-        },
-    },
-});
 
-const linkStyle = {
-    textDecoration: "none",
-    color: 'white'
-};
 
 export default function SignUp() {
     const navigate = useNavigate()
@@ -42,22 +26,18 @@ export default function SignUp() {
 
     const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
         const formData = new FormData(event.currentTarget);
-        const data = JSON.stringify({
+        const newUser = JSON.stringify({
             username: formData.get('username'),
             email: formData.get('email'),
             password: formData.get('password')
         })
-        const res = fetch('http://localhost:3000/createUser', {
-            method: 'post',
-            headers: {'Content-Type':'application/json;charset=utf-8'},
-            body: data
-        });
-        res.then( async (response: Response) => {
-            const token = await response.json()
-            localStorage.setItem('Authentification', token.token)
-        })
-        navigate('/')
-        event.preventDefault();
+        try {
+            createUser(newUser);
+            navigate('/')
+            event.preventDefault();
+        } catch (error) {
+            console.error('Error:', error);
+        }
     };
 
     return (
@@ -171,3 +151,4 @@ export default function SignUp() {
         </ThemeProvider>
     );
 }
+

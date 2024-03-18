@@ -1,10 +1,23 @@
 import CommentType from "../models/comment";
 import PostType from "../models/post";
+import UserType from "../models/user";
 
 
 const getUsers = async () => {
   const response = await fetch('http://localhost:3000/users');
   return response.json();
+}
+
+const createUser = async (user: any) => {
+  const res = fetch('http://localhost:3000/createUser', {
+            method: 'post',
+            headers: {'Content-Type':'application/json;charset=utf-8'},
+            body: user
+  });
+  res.then( async (response: Response) => {
+      const token = await response.json()
+      localStorage.setItem('Authentification', token.token)
+  })
 }
 
 const searchUsers = async (searchTerm : string) => {
@@ -137,5 +150,5 @@ const getCommentById = async (id: string) => {
 
 
 
-export { getUsers, getUserById, getPosts, createPost, createComment, getCommentById, searchUsers, getPostsByAuthorId };
+export { getUsers, getUserById, getPosts, createPost, createComment, getCommentById, searchUsers, getPostsByAuthorId, createUser };
 

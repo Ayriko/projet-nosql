@@ -10,7 +10,7 @@ function AddCommentComponent({postId } : {postId : string}): React.JSX.Element {
         const commentContent = form.elements.namedItem('commentContent') as HTMLInputElement;
 
         const newComment : CommentType = {
-            id: Math.random().toString(36).substr(2, 9),
+            id: "",
             author: '65ef0ca6a2f5fd42b4e4be75',
             postId: postId,
             date: new Date().toDateString(),
