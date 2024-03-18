@@ -6,7 +6,6 @@ import PostType  from '../models/post.ts';
 import PostComponent from '../components/PostComponent.tsx';
 import AddPostComponent from '../components/AddPostComponent.tsx';
 
-
 function Homepage(): React.JSX.Element {
     const [posts, setPosts] = useState([]);
 
@@ -23,14 +22,14 @@ function Homepage(): React.JSX.Element {
     }, []);
 
     return (
-        <>
+        <div>
             <Navbar/>
             <Stack
                 direction="column"
                 justifyContent="flex-start"
                 alignItems="center"
                 spacing={3}
-                sx={{ marginTop: '2rem' }}
+                sx={{ margin: '2rem' }}
             >
             <AddPostComponent/>
                 {
@@ -42,7 +41,7 @@ function Homepage(): React.JSX.Element {
                         );})
                 }
             </Stack>
-        </>
+        </div>
     );
 }
 
