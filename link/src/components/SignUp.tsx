@@ -54,7 +54,6 @@ export default function SignUp() {
         });
         res.then( async (response: Response) => {
             const token = await response.json()
-            console.log(token.token)
             localStorage.setItem('Authentification', token.token)
         })
         navigate('/')
@@ -90,7 +89,7 @@ export default function SignUp() {
                         <Grid container spacing={2}>
                             <Grid item xs={12}>
                                 <TextField
-                                    name="userName"
+                                    name="username"
                                     required
                                     fullWidth
                                     id="username"

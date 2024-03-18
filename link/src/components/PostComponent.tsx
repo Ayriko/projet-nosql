@@ -28,22 +28,22 @@ export default function PostComponent({post}: {post: PostType}) {
     const [authorUsername, setAuthorUsername] = useState("");
 
     useEffect(() => {
-        getUserById(post.author)
+        getUserById(post.authorId)
             .then(user => {
-                setAuthorUsername(user.username); 
+                setAuthorUsername(user.username);
             })
             .catch(error => {
                 console.error("Erreur lors de la récupération de l'utilisateur :", error);
-                setAuthorUsername("Unknown"); 
+                setAuthorUsername("Unknown");
             });
-    }, [post.author]);
+    }, [post.authorId]);
 
     const date = getTimeAgo(post.date);
 
    const initialUsername = getFirstLetterUsername(authorUsername);
 
 
-    
+
     const handleExpandClick = () => {
         setExpanded(!expanded);
     };
@@ -124,7 +124,7 @@ export default function PostComponent({post}: {post: PostType}) {
                         <Typography variant="body1" color="white">
                             No comments yet
                         </Typography>
-                        
+
                     }
 
                      <AddCommentComponent postId={post._id}/>
