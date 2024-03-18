@@ -14,12 +14,11 @@ import { Divider } from '@mui/material';
 import PostType from '../models/post';
 import { getUserById } from '../client/client';
 import { useEffect, useState } from 'react';
-import getFirstLetterUsername from '../utils/getFirstLetterUsername';
 import { Grid, Menu, MenuItem } from '@mui/material';
 import CommentComponent from './CommentComponent.tsx';
 import AddCommentComponent from './AddCommentComponent.tsx';
 import getTimeAgo from '../utils/timeAgo.ts';
-import {Link} from "react-router-dom";
+import { Link } from 'react-router-dom';
 
 
 export default function PostComponent({post}: {post: PostType}) {
@@ -40,7 +39,6 @@ export default function PostComponent({post}: {post: PostType}) {
 
     const date = getTimeAgo(post.date);
 
-   const initialUsername = getFirstLetterUsername(authorUsername);
 
 
 
@@ -60,11 +58,13 @@ export default function PostComponent({post}: {post: PostType}) {
         <Card sx={{ width: 800, margin: 'auto', background : 'black', border: '0.5px solid grey'}}>
             <CardHeader
                 avatar={
-                    <Avatar sx={{ bgcolor: 'white' }} aria-label="recipe">
-                         <Typography variant="subtitle2" color="black">
-                             <Link to={"/profil"}>{initialUsername}</Link>
-                        </Typography>
-                    </Avatar>
+                    <Link to={`/profil/${post.author}`}>
+                        <Avatar sx={{ bgcolor: 'white' }} aria-label="recipe">
+                            <Typography variant="subtitle2" color="black">
+                            {authorUsername.charAt(0).toUpperCase()}
+                            </Typography>
+                        </Avatar>
+                    </Link>
                 }
                 title={
                     <Grid container justifyContent="space-between">

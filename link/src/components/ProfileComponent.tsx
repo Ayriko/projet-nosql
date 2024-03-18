@@ -1,25 +1,38 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import Typography from "@mui/material/Typography";
 import Avatar from "@mui/material/Avatar";
 import Button from "@mui/material/Button";
 import Box from "@mui/material/Box";
+import { getUserById } from '../client/client';
+import UserType from '../models/user';
 
-function ProfileComponent(): React.JSX.Element {
+function ProfileComponent({profilId} : {profilId : string }): React.JSX.Element {
+    const [user, setUser] = useState<UserType>();
+
+    useEffect(() => {
+        getUserById(profilId)
+            .then(user => {
+                setUser(user); 
+            })
+            .catch(error => {
+                console.error("Erreur lors de la récupération de l'utilisateur :", error);
+            });
+    }, [profilId]);
+
     return (
-        <Box display="flex" flexDirection="column" alignItems="center" maxWidth={600} margin="auto" textAlign="center">
+        <Box display="flex" flexDirection="column" alignItems="center" maxWidth={800} margin={"auto"} marginTop={'5em'} textAlign="center">
             <Box marginBottom={4}>
                 <Avatar sx={{ width: 120, height: 120, bgcolor: 'primary.main', color: 'white' }}>
                     <Typography variant="h2">
-                        T
+                        {user?.username.charAt(0).toUpperCase()}
                     </Typography>
                 </Avatar>
             </Box>
             <Box marginBottom={4}>
                 <Typography variant="h4" color="white">
-                    Toto
+                    {user?.username}
                 </Typography>
                 <Typography variant="subtitle1" color="white">
-                    toto@toto
                 </Typography>
             </Box>
             <Box marginBottom={4}>

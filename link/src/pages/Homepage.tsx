@@ -33,7 +33,7 @@ function Homepage(): React.JSX.Element {
                 justifyContent="flex-start"
                 alignItems="center"
                 spacing={3}
-                sx={{ margin: '2rem' }}
+                sx={{ margin: '5rem' }}
             >
             <SearchResultsComponent />
                  
