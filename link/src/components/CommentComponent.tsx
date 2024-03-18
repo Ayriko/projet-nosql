@@ -4,7 +4,6 @@ import CardHeader from "@mui/material/CardHeader";
 import CommentType from '../models/comment';
 import { useEffect, useState } from 'react';
 import { getCommentById, getUserById } from '../client/client';
-import getFirstLetterUsername from '../utils/getFirstLetterUsername';
 import getTimeAgo from '../utils/timeAgo';
 
 function CommentComponent({commentId}: {commentId: string}) {
@@ -39,14 +38,13 @@ function CommentComponent({commentId}: {commentId: string}) {
 
     const date = getTimeAgo(comment?.date!);
 
-   const initialUsername = getFirstLetterUsername(authorUsername);
     return (
         <Card sx={{ margin: '5px', background : 'black', border: '0.5px solid grey'}}>
             <CardHeader
                 avatar={
                     <Avatar sx={{ bgcolor: 'white' }} aria-label="recipe">
                          <Typography variant="subtitle2" color="black">
-                         {initialUsername}
+                         {authorUsername.charAt(0).toUpperCase()}
                         </Typography>
                     </Avatar>
                 }
