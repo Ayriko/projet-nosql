@@ -43,6 +43,20 @@ const getPosts = async () => {
   return response.json();
 }
 
+const getPostsByAuthorId = async (authorId: string) => {
+  try {
+    const postsList = await getPosts();
+    const filteredPosts = postsList.filter((post: { author: string; }) => post.author === authorId);
+    return filteredPosts;
+  } catch (error) {
+    console.error('Erreur lors de la récupération des posts :', error);
+    throw error; 
+  }
+};
+
+
+
+
 const createPost = async (post: PostType) => {
   await fetch('http://localhost:3000/post', {
     method: 'POST',
@@ -116,5 +130,5 @@ const getCommentById = async (id: string) => {
 
 
 
-export { getUsers, getUserById, getPosts, createPost, createComment, getCommentById, searchUsers };
+export { getUsers, getUserById, getPosts, createPost, createComment, getCommentById, searchUsers, getPostsByAuthorId };
 

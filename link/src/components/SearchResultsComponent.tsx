@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 import { useSearchBarContext } from "../contexts/SearchBarContext";
 
 const SearchResultsComponent = () => {
@@ -9,7 +10,9 @@ const SearchResultsComponent = () => {
         {searchBarResult.map((username, index) => {
         return (
             <div key={index} style={{borderTop:'0.5px solid grey'}}>
-            <p style={{color:'white', textAlign:'start', paddingLeft:'10px', width:'200px'}}>@ {username}</p>
+                <Link >
+                    <p style={{color:'white', textAlign:'start', paddingLeft:'10px', width:'200px'}}>@ {username}</p>
+                </Link>
             </div>
         );
         })}
