@@ -6,18 +6,18 @@ import Box from "@mui/material/Box";
 import { getUserById } from '../client/client';
 import UserType from '../models/user';
 
-function ProfileComponent({profilId} : {profilId : string }): React.JSX.Element {
+function ProfileComponent({userId} : {userId : string }): React.JSX.Element {
     const [user, setUser] = useState<UserType>();
 
     useEffect(() => {
-        getUserById(profilId)
+        getUserById(userId)
             .then(user => {
-                setUser(user); 
+                setUser(user);
             })
             .catch(error => {
                 console.error("Erreur lors de la récupération de l'utilisateur :", error);
             });
-    }, [profilId]);
+    }, [userId]);
 
     return (
         <Box display="flex" flexDirection="column" alignItems="center" maxWidth={800} margin={"auto"} marginTop={'5em'} textAlign="center">

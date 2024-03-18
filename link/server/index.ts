@@ -7,9 +7,6 @@ import bcrypt from 'bcrypt';
 import Post from './models/post';
 import cors from 'cors';
 import Comment from './models/comment';
-import mongoose, {Model} from "mongoose";
-
-
 
 const app = express();
 const port = 3000;
