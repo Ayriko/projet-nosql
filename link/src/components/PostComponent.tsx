@@ -58,7 +58,7 @@ export default function PostComponent({post}: {post: PostType}) {
         <Card sx={{ width: 800, margin: 'auto', background : 'black', border: '0.5px solid grey'}}>
             <CardHeader
                 avatar={
-                    <Link to={`/profil/${post.author}`}>
+                    <Link to={`/profil/${post.authorId}`}>
                         <Avatar sx={{ bgcolor: 'white' }} aria-label="recipe">
                             <Typography variant="subtitle2" color="black">
                             {authorUsername.charAt(0).toUpperCase()}
