@@ -1,0 +1,33 @@
+version: '3'
+services:
+  redis:
+    image: redis:latest
+    ports:
+      - "6379:6379"
+  redisinsight:
+    image: redislabs/redisinsight:1.14.0
+    ports:
+      - "8001:8001"
+    volumes:
+      - ./redisinsight:/db
+  mongo:
+    image: mongo:6
+    container_name: mongo
+    restart: always
+    ports:
+      - "27017:27017"
+    volumes:
+      - data:/data/db
+      - ./link:/link
+  neo4j:
+    image: neo4j:latest
+    container_name: neo4j
+    ports:
+      - "7687:7687"
+      - "7474:7474"
+    volumes:
+      - neodata:/data
+
+volumes:
+  data:
+  neodata:
