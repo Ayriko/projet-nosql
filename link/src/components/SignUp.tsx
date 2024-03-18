@@ -3,14 +3,14 @@ import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
 import CssBaseline from '@mui/material/CssBaseline';
 import TextField from '@mui/material/TextField';
-import Link from '@mui/material/Link';
 import Grid from '@mui/material/Grid';
 import Box from '@mui/material/Box';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
-import {Link as RLink} from "react-router-dom";
+import {Link as RLink, useNavigate} from "react-router-dom";
+import {useEffect} from "react";
 
 // Define custom theme
 const theme = createTheme({
@@ -33,13 +33,32 @@ const linkStyle = {
 };
 
 export default function SignUp() {
+    const navigate = useNavigate()
+
+    useEffect(() => {
+        if (localStorage.getItem('Authentification'))
+            navigate('/')
+    }, [navigate]);
+
     const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
-        event.preventDefault();
-        const data = new FormData(event.currentTarget);
-        console.log({
-            email: data.get('email'),
-            password: data.get('password'),
+        const formData = new FormData(event.currentTarget);
+        const data = JSON.stringify({
+            username: formData.get('username'),
+            email: formData.get('email'),
+            password: formData.get('password')
+        })
+        const res = fetch('http://localhost:3000/createUser', {
+            method: 'post',
+            headers: {'Content-Type':'application/json;charset=utf-8'},
+            body: data
         });
+        res.then( async (response: Response) => {
+            const token = await response.json()
+            console.log(token.token)
+            localStorage.setItem('Authentification', token.token)
+        })
+        navigate('/')
+        event.preventDefault();
     };
 
     return (
@@ -74,7 +93,7 @@ export default function SignUp() {
                                     name="userName"
                                     required
                                     fullWidth
-                                    id="userName"
+                                    id="username"
                                     label="Username"
                                     autoFocus
                                     InputProps={{
@@ -142,10 +161,9 @@ export default function SignUp() {
                         </Button>
                         <Grid container justifyContent="flex-end">
                             <Grid item>
-                                <Link variant="body2"> <RLink to={"/login"} style={linkStyle}>
+                                <RLink to={"/login"}>
                                         Already have an account? Sign in
-                                    </RLink>
-                                </Link>
+                                </RLink>
                             </Grid>
                         </Grid>
                     </Box>

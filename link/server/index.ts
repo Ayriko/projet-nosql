@@ -1,23 +1,28 @@
 import express from 'express';
+import bodyParser from 'body-parser';
+import UserMongo from './models/userMongo.ts';
+import { User } from './type/user.ts';
+import jwt from 'jsonwebtoken';
+import bcrypt from 'bcrypt';
 import Post from './models/post';
 import cors from 'cors';
-import User from './models/user';
 import Comment from './models/comment';
 
 
 
 const app = express();
+const port = 3000;
 app.use(express.json())
 app.use(cors());
-const port = 3000; 
+app.use(bodyParser.json());
 
 app.get('/', (_, res) => {
   res.send('Hello World!');
 });
 
-// USERS
-app.get('/users', (_, res) => {
-  User.find()
+app.get('/users', (req, res) => {
+  console.log(req.body)
+  UserMongo.find()
     .then((users) => {
       console.log('Users:', users);
       res.send(users);
@@ -28,14 +33,44 @@ app.get('/users', (_, res) => {
 app.get('/user/:id', (req, res) => {
   const id = req.params.id;
   console.log('Fetching user:', id)
-  User.findById(id)
+  UserMongo.findById(id)
     .then((user) => {
-      console .log('User:', user);
       res.send(user);
     })
     .catch((error) => console.error('Error fetching user:', error));
 });
 
+app.post('/login', (req, res) => {
+  console.log(req.body)
+  const params: {email: string, password: string} = req.body
+  UserMongo.findOne({email: params.email}).then(async (user) => {
+    if (!user?.password) {
+      return res.status(400).send({
+        message: 'This is an error!'
+      });
+    }
+
+    if (!(await bcrypt.compare(params.password, user.password))) {
+      return res.status(401).send({
+        message: 'Username or password is not correct'
+      });
+    }
+
+    const token = jwt.sign({id: user._id.toString()}, "secret")
+    res.send({'token': token});
+  })
+})
+
+app.post('/createUser',  async (req, res) => {
+  const newUser: User = req.body
+  newUser.password  = await bcrypt.hash(newUser.password, 10)
+  const user = await UserMongo.create(newUser)
+  const token = jwt.sign({id: user._id.toString()}, "secret")
+  UserMongo.find()
+    .then(() => {
+      res.send({'token': token});
+    })
+})
 
 // POSTS
 app.get('/posts', (_, res) => {
@@ -76,7 +111,7 @@ app.post('/post', (req, res) => {
 app.post('/addcommenttopost/:id', async (req, res) =>  {
     const id = req.params.id;
     await Post.findOneAndUpdate(
-      { _id: id }, 
+      { _id: id },
       {
         $push: {"comments": req.body.commentId}
       },

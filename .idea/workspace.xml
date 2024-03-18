@@ -5,6 +5,7 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="8aaec906-6bfe-48a3-8480-ab29cb32f21d" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/link/server/type/user.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/link/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/link/package-lock.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/link/src/components/Navbar.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/link/src/components/Navbar.tsx" afterDir="false" />
@@ -58,7 +59,7 @@
     "ts.external.directory.path": "/home/ayriko/Bureau/nosql/projet-nosql/link/node_modules/typescript/lib",
     "vue.rearranger.settings.migration": "true"
   }
-}]]></component>
+}</component>
   <component name="ReactDesignerToolWindowState">
     <option name="myId2Visible">
       <map>

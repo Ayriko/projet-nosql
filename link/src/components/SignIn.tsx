@@ -10,7 +10,8 @@ import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
-import { Link as RLink } from "react-router-dom";
+import {Link as RLink, useNavigate} from "react-router-dom";
+import {useEffect} from "react";
 
 // Define custom theme
 const theme = createTheme({
@@ -33,13 +34,31 @@ const linkStyle = {
 };
 
 export default function SignIn() {
+    const navigate = useNavigate()
+
+    useEffect(() => {
+        if (localStorage.getItem('Authentification'))
+            navigate('/')
+    }, [navigate]);
+
     const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
-        const data = new FormData(event.currentTarget);
-        console.log({
-            email: data.get('email'),
-            password: data.get('password'),
+        const formData = new FormData(event.currentTarget);
+        const data = JSON.stringify({
+            email: formData.get('email'),
+            password: formData.get('password')
+        })
+        const res = fetch('http://localhost:3000/login', {
+            method: 'post',
+            headers: {'Content-Type':'application/json;charset=utf-8'},
+            body: data
         });
+        res.then( async (response: Response) => {
+            const token = await response.json()
+            console.log(token.token)
+            localStorage.setItem('Authentification', token.token)
+        })
+        navigate('/')
     };
 
     return (
@@ -126,10 +145,9 @@ export default function SignIn() {
                         </Button>
                         <Grid container>
                             <Grid item>
-                                <Link variant="body2"> <RLink to={"/register"} style={{ color: '#ffffff' }}>
-                                    {"Don't have an account? Sign Up"}
+                                <RLink to={"/register"}>
+                                        {"Don't have an account? Sign Up"}
                                 </RLink>
-                                </Link>
                             </Grid>
                         </Grid>
                     </Box>
