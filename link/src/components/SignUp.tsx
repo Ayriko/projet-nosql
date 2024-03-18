@@ -12,21 +12,25 @@ import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import {Link as RLink} from "react-router-dom";
 
-function Copyright(props: any) {
-    return (
-        <Typography variant="body2" color="text.secondary" align="center" {...props}>
-            {'Copyright © '}
-            <Link color="inherit" href="https://mui.com/">
-                Link
-            </Link>{' '}
-            {new Date().getFullYear()}
-            {'.'}
-        </Typography>
-    );
-}
+// Define custom theme
+const theme = createTheme({
+    palette: {
+        primary: {
+            main: '#ffffff', // white color
+        },
+        background: {
+            default: '#000000', // black color
+        },
+        text: {
+            primary: '#ffffff', // white color
+        },
+    },
+});
 
-// TODO remove, this demo shouldn't need to reset the theme.
-const defaultTheme = createTheme();
+const linkStyle = {
+    textDecoration: "none",
+    color: 'white'
+};
 
 export default function SignUp() {
     const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
@@ -39,15 +43,22 @@ export default function SignUp() {
     };
 
     return (
-        <ThemeProvider theme={defaultTheme}>
-            <Container component="main" maxWidth="xs">
+        <ThemeProvider theme={theme}>
+            <Container component="main" maxWidth="xs"
+                       sx={{
+                           boxShadow: '0px 0px 0px 2px white',
+                           borderRadius: '10px',
+                           padding: '30px',
+                           marginTop: '10%'
+                       }}
+            >
                 <CssBaseline />
                 <Box
                     sx={{
-                        marginTop: 8,
                         display: 'flex',
                         flexDirection: 'column',
                         alignItems: 'center',
+                        color: 'text.primary',
                     }}
                 >
                     <Avatar sx={{ m: 1, bgcolor: 'secondary.main' }}>
@@ -60,13 +71,23 @@ export default function SignUp() {
                         <Grid container spacing={2}>
                             <Grid item xs={12}>
                                 <TextField
-                                    autoComplete="given-name"
                                     name="userName"
                                     required
                                     fullWidth
                                     id="userName"
                                     label="Username"
                                     autoFocus
+                                    InputProps={{
+                                        style: {
+                                            color: 'white',
+                                            borderColor: 'white',
+                                        },
+                                        sx: {
+                                            '& .MuiOutlinedInput-notchedOutline': {
+                                                borderColor: 'white !important',
+                                            },
+                                        },
+                                    }}
                                 />
                             </Grid>
                             <Grid item xs={12}>
@@ -76,7 +97,17 @@ export default function SignUp() {
                                     id="email"
                                     label="Email Address"
                                     name="email"
-                                    autoComplete="email"
+                                    InputProps={{
+                                        style: {
+                                            color: 'white',
+                                            borderColor: 'white',
+                                        },
+                                        sx: {
+                                            '& .MuiOutlinedInput-notchedOutline': {
+                                                borderColor: 'white !important',
+                                            },
+                                        },
+                                    }}
                                 />
                             </Grid>
                             <Grid item xs={12}>
@@ -87,7 +118,17 @@ export default function SignUp() {
                                     label="Password"
                                     type="password"
                                     id="password"
-                                    autoComplete="new-password"
+                                    InputProps={{
+                                        style: {
+                                            color: 'white',
+                                            borderColor: 'white',
+                                        },
+                                        sx: {
+                                            '& .MuiOutlinedInput-notchedOutline': {
+                                                borderColor: 'white !important',
+                                            },
+                                        },
+                                    }}
                                 />
                             </Grid>
                         </Grid>
@@ -101,7 +142,7 @@ export default function SignUp() {
                         </Button>
                         <Grid container justifyContent="flex-end">
                             <Grid item>
-                                <Link variant="body2"> <RLink to={"/login"}>
+                                <Link variant="body2"> <RLink to={"/login"} style={linkStyle}>
                                         Already have an account? Sign in
                                     </RLink>
                                 </Link>
@@ -109,7 +150,6 @@ export default function SignUp() {
                         </Grid>
                     </Box>
                 </Box>
-                <Copyright sx={{ mt: 5 }} />
             </Container>
         </ThemeProvider>
     );

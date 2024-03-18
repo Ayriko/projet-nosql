@@ -3,7 +3,9 @@ import SignIn from "../components/SignIn";
 
 function Login(): React.JSX.Element {
     return (
-        <SignIn />
+        <div className="login">
+            <SignIn />
+        </div>
     );
 }
 

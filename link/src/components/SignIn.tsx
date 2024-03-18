@@ -3,8 +3,6 @@ import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
 import CssBaseline from '@mui/material/CssBaseline';
 import TextField from '@mui/material/TextField';
-import FormControlLabel from '@mui/material/FormControlLabel';
-import Checkbox from '@mui/material/Checkbox';
 import Link from '@mui/material/Link';
 import Grid from '@mui/material/Grid';
 import Box from '@mui/material/Box';
@@ -12,23 +10,27 @@ import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
-import {Link as RLink} from "react-router-dom";
+import { Link as RLink } from "react-router-dom";
 
-function Copyright(props: any) {
-    return (
-        <Typography variant="body2" color="text.secondary" align="center" {...props}>
-            {'Copyright © '}
-            <Link color="inherit" href="https://mui.com/">
-                Your Website
-            </Link>{' '}
-            {new Date().getFullYear()}
-            {'.'}
-        </Typography>
-    );
-}
+// Define custom theme
+const theme = createTheme({
+    palette: {
+        primary: {
+            main: '#ffffff', // white color
+        },
+        background: {
+            default: '#000000', // black color
+        },
+        text: {
+            primary: '#ffffff', // white color
+        },
+    },
+});
 
-// TODO remove, this demo shouldn't need to reset the theme.
-const defaultTheme = createTheme();
+const linkStyle = {
+    textDecoration: "none",
+    color: 'black'
+};
 
 export default function SignIn() {
     const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
@@ -41,15 +43,22 @@ export default function SignIn() {
     };
 
     return (
-        <ThemeProvider theme={defaultTheme}>
-            <Container component="main" maxWidth="xs">
+        <ThemeProvider theme={theme}>
+            <Container component="main" maxWidth="xs"
+                       sx={{
+                           boxShadow: '0px 0px 0px 2px white',
+                           borderRadius: '10px',
+                           padding: '30px',
+                           marginTop: '10%'
+                       }}
+            >
                 <CssBaseline />
                 <Box
                     sx={{
-                        marginTop: 8,
                         display: 'flex',
                         flexDirection: 'column',
                         alignItems: 'center',
+                        color: 'text.primary',
                     }}
                 >
                     <Avatar sx={{ m: 1, bgcolor: 'secondary.main' }}>
@@ -66,8 +75,18 @@ export default function SignIn() {
                             id="email"
                             label="Email Address"
                             name="email"
-                            autoComplete="email"
                             autoFocus
+                            InputProps={{
+                                style: {
+                                    color: 'white', // Set text color to white
+                                    borderColor: 'white', // Set border color to white
+                                },
+                                sx: {
+                                    '& .MuiOutlinedInput-notchedOutline': {
+                                        borderColor: 'white !important', // Set border color to white
+                                    },
+                                },
+                            }}
                         />
                         <TextField
                             margin="normal"
@@ -77,11 +96,17 @@ export default function SignIn() {
                             label="Password"
                             type="password"
                             id="password"
-                            autoComplete="current-password"
-                        />
-                        <FormControlLabel
-                            control={<Checkbox value="remember" color="primary" />}
-                            label="Remember me"
+                            InputProps={{
+                                style: {
+                                    color: 'white', // Set text color to white
+                                    borderColor: 'white', // Set border color to white
+                                },
+                                sx: {
+                                    '& .MuiOutlinedInput-notchedOutline': {
+                                        borderColor: 'white !important', // Set border color to white
+                                    },
+                                },
+                            }}
                         />
                         <Button
                             type="submit"
@@ -97,24 +122,18 @@ export default function SignIn() {
                             variant="contained"
                             sx={{ mt: 0, mb: 2 }}
                         >
-                            <RLink to={"/"}>Cancel</RLink>
+                            <RLink to={"/"} style={linkStyle}>Cancel</RLink>
                         </Button>
                         <Grid container>
-                            <Grid item xs>
-                                <Link href="#" variant="body2">
-                                    Forgot password?
-                                </Link>
-                            </Grid>
                             <Grid item>
-                                <Link variant="body2"> <RLink to={"/register"}>
-                                        {"Don't have an account? Sign Up"}
-                                    </RLink>
+                                <Link variant="body2"> <RLink to={"/register"} style={{ color: '#ffffff' }}>
+                                    {"Don't have an account? Sign Up"}
+                                </RLink>
                                 </Link>
                             </Grid>
                         </Grid>
                     </Box>
                 </Box>
-                <Copyright sx={{ mt: 8, mb: 4 }} />
             </Container>
         </ThemeProvider>
     );

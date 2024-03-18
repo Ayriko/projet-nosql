@@ -19,6 +19,7 @@ import { Grid, Menu, MenuItem } from '@mui/material';
 import CommentComponent from './CommentComponent.tsx';
 import AddCommentComponent from './AddCommentComponent.tsx';
 import getTimeAgo from '../utils/timeAgo.ts';
+import {Link} from "react-router-dom";
 
 
 export default function PostComponent({post}: {post: PostType}) {
@@ -61,7 +62,7 @@ export default function PostComponent({post}: {post: PostType}) {
                 avatar={
                     <Avatar sx={{ bgcolor: 'white' }} aria-label="recipe">
                          <Typography variant="subtitle2" color="black">
-                         {initialUsername}
+                             <Link to={"/profil"}>{initialUsername}</Link>
                         </Typography>
                     </Avatar>
                 }
@@ -76,7 +77,6 @@ export default function PostComponent({post}: {post: PostType}) {
                 }
                 action={
                     <>
-                      
                         <IconButton aria-label="settings" onClick={handleMenuClick} sx={{color : 'grey'}}>
                         <MoreVertIcon />
                         </IconButton>

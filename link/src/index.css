@@ -19,7 +19,9 @@
   -moz-osx-font-smoothing: grayscale;
 }
 
-
+.profile-container {
+  color: white;
+}
 
 @media (prefers-color-scheme: light) {
   :root {

@@ -13,7 +13,16 @@ import AccountCircle from '@mui/icons-material/AccountCircle';
 import NotificationsIcon from '@mui/icons-material/Notifications';
 import { Link } from 'react-router-dom';
 
+const linkStyle = {
+    margin: "1rem",
+    textDecoration: "none",
+    color: 'white'
+};
 
+const linkStyle2 = {
+    textDecoration: "none",
+    color: 'black'
+};
 
 export default function Navbar() {
     const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
@@ -53,8 +62,8 @@ export default function Navbar() {
             open={isMenuOpen}
             onClose={handleMenuClose}
         >
-            <MenuItem onClick={handleMenuClose}><Link to={"/login"}>Login</Link></MenuItem>
-            <MenuItem onClick={handleMenuClose}>Profil</MenuItem>
+            <MenuItem onClick={handleMenuClose}><Link to={"/login"} style={linkStyle2}>Login</Link></MenuItem>
+            <MenuItem onClick={handleMenuClose}><Link to={"/profil"} style={linkStyle2}>Profil</Link></MenuItem>
             <MenuItem onClick={handleMenuClose}>Logout</MenuItem>
         </Menu>
     );
@@ -111,7 +120,7 @@ export default function Navbar() {
                         component="div"
                         sx={{ display: { xs: 'none', sm: 'block' } }}
                     >
-                        Link
+                        <Link to={"/"} style={linkStyle}>Link</Link>
                     </Typography>
                     <Search>
                         <SearchIconWrapper>
