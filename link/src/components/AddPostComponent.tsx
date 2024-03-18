@@ -10,9 +10,9 @@ function AddPostComponent(): React.JSX.Element {
         const postContent = form.elements.namedItem('postContent') as HTMLInputElement;
 
         const newPost : PostType = {
-            _id: Math.random().toString(36).substr(2, 9),
-            author: '65ef0ca6a2f5fd42b4e4be75',
-            date: new Date().toDateString(),  
+            _id: '',
+            authorId: '',
+            date: new Date().toDateString(),
             content: postContent.value,
             likes: 0,
             comments: []
@@ -20,7 +20,7 @@ function AddPostComponent(): React.JSX.Element {
         createPost(newPost);
         postContent.value = "";
     }
- 
+
 
 
     const initialUsername = "O";

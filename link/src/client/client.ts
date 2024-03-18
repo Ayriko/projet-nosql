@@ -1,6 +1,5 @@
 import CommentType from "../models/comment";
 import PostType from "../models/post";
-import UserType from "../models/user";
 
 
 const getUsers = async () => {
@@ -25,15 +24,20 @@ const searchUsers = async (searchTerm : string) => {
 }
 
 const getUserById = async (id: string) => {
-  const response = await fetch(`http://localhost:3000/user/${id}`);
-  const userData = await response.json();
-  const user : UserType = {
-    id: userData.id,
-    username: userData.username,
-    mail: userData.mail,
-    password: userData.password
+  const token = localStorage.getItem('Authentification')
+  if (!token) {
+    return
   }
-  return user;
+
+  return await fetch(`http://localhost:3000/user/${id}`, {
+    method: 'GET',
+    headers: {
+      'Content-type': 'application/json; charset=UTF-8',
+      'Authorization': `Bearer ${token}`
+    },
+  }).then(async (response) => {
+    return await response.json()
+  });
 }
 
 
@@ -44,23 +48,28 @@ const getPosts = async () => {
 }
 
 const createPost = async (post: PostType) => {
+  const token = localStorage.getItem('Authentification')
+  if (!token) {
+    return
+  }
+
   await fetch('http://localhost:3000/post', {
     method: 'POST',
     body: JSON.stringify({
-      author: post.author,
+      author: '',
       content: post.content,
       date: post.date,
       likes: post.likes,
       comments: post.comments
    }),
    headers: {
-    'Content-type': 'application/json; charset=UTF-8'
+    'Content-type': 'application/json; charset=UTF-8',
+    'Authorization': `Bearer ${token}`
   },
   });
 }
 
 const createComment = async (comment: CommentType) => {
-  console.log(comment);
   const response  = await fetch('http://localhost:3000/comment', {
     method: 'POST',
     body: JSON.stringify({
@@ -75,14 +84,12 @@ const createComment = async (comment: CommentType) => {
   });
   const createdComment = await response.json();
 
-  console.log(createdComment);
-
   try {
     await addCommentToPost(createdComment._id, createdComment.postId);
   } catch {
     console.log(Error);
   }
-  
+
 }
 
 const addCommentToPost = async (commentId: string, postId : string) => {

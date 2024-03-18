@@ -1,6 +1,6 @@
 interface PostType {
     _id: string;
-    author : string;
+    authorId : string;
     date : string;
     content: string;
     likes: number;

@@ -7,6 +7,7 @@ import bcrypt from 'bcrypt';
 import Post from './models/post';
 import cors from 'cors';
 import Comment from './models/comment';
+import mongoose, {Model} from "mongoose";
 
 
 
@@ -21,10 +22,8 @@ app.get('/', (_, res) => {
 });
 
 app.get('/users', (req, res) => {
-  console.log(req.body)
   UserMongo.find()
     .then((users) => {
-      console.log('Users:', users);
       res.send(users);
     })
     .catch((error) => console.error('Error fetching users:', error));
@@ -32,7 +31,6 @@ app.get('/users', (req, res) => {
 
 app.get('/user/:id', (req, res) => {
   const id = req.params.id;
-  console.log('Fetching user:', id)
   UserMongo.findById(id)
     .then((user) => {
       res.send(user);
@@ -41,7 +39,6 @@ app.get('/user/:id', (req, res) => {
 });
 
 app.post('/login', (req, res) => {
-  console.log(req.body)
   const params: {email: string, password: string} = req.body
   UserMongo.findOne({email: params.email}).then(async (user) => {
     if (!user?.password) {
@@ -76,7 +73,6 @@ app.post('/createUser',  async (req, res) => {
 app.get('/posts', (_, res) => {
   Post.find()
     .then((posts) => {
-      console.log('Posts:', posts);
       res.send(posts);
     })
     .catch((error) => console.error('Error fetching posts:', error));
@@ -86,15 +82,22 @@ app.get('/post/:id', (req, res) => {
   const id = req.params.id;
   Post.findById(id)
     .then((post) => {
-      console.log('Post:', post);
       res.send(post);
     })
     .catch((error) => console.error('Error fetching post:', error));
 });
 
 app.post('/post', (req, res) => {
+  const bearerAuth = req.headers.authorization;
+  if (!bearerAuth) {
+    throw new Error('No connection')
+  }
+
+  const token = bearerAuth.substring(7, bearerAuth.length);
+  const decodeToken: jwt.JwtPayload = jwt.verify(token, 'secret') as jwt.JwtPayload
+
   const post = new Post({
-    author: req.body.author,
+    authorId: decodeToken.id,
     date: req.body.date,
     content: req.body.content,
     likes: req.body.likes,
@@ -102,7 +105,6 @@ app.post('/post', (req, res) => {
   });
   post.save()
     .then((post) => {
-      console.log('Post:', post);
       res.send(post);
     })
     .catch((error) => console.error('Error creating post:', error));
@@ -131,7 +133,6 @@ app.post('/comment', (req, res) => {
   });
   comment.save()
     .then((comment) => {
-      console.log('Comment:', comment);
       res.send(comment);
     })
     .catch((error) => console.error('Error creating comment:', error));
@@ -141,7 +142,6 @@ app.get('/comment/:id', (req, res) => {
   const id = req.params.id;
   Comment.findById(id)
     .then((comment) => {
-      console.log('Comment:', comment);
       res.send(comment);
     })
     .catch((error) => console.error('Error fetching comment:', error));

@@ -5,8 +5,15 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="8aaec906-6bfe-48a3-8480-ab29cb32f21d" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/link/server/type/user.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/link/server/index.ts" beforeDir="false" afterPath="$PROJECT_DIR$/link/server/index.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/link/server/models/post.ts" beforeDir="false" afterPath="$PROJECT_DIR$/link/server/models/post.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/link/src/client/client.ts" beforeDir="false" afterPath="$PROJECT_DIR$/link/src/client/client.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/link/src/components/AddPostComponent.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/link/src/components/AddPostComponent.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/link/src/components/PostComponent.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/link/src/components/PostComponent.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/link/src/components/SignIn.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/link/src/components/SignIn.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/link/src/components/SignUp.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/link/src/components/SignUp.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/link/src/models/post.ts" beforeDir="false" afterPath="$PROJECT_DIR$/link/src/models/post.ts" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -40,15 +47,22 @@
     &quot;ReactCreateComponentLastSelected&quot;: &quot;functionDeclarationComponent&quot;,
     &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
     &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;docker&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;main&quot;,
     &quot;last_opened_file_path&quot;: &quot;/home/ayriko/Bureau/nosql/projet-nosql&quot;,
     &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
     &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
     &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
     &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
     &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
-    &quot;ts.external.directory.path&quot;: &quot;/home/ayriko/Bureau/nosql/projet-nosql/link/node_modules/typescript/lib&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.pluginManager&quot;,
+    &quot;ts.external.directory.path&quot;: &quot;/home/welan/ynov/noSql/projet-nosql/link/node_modules/typescript/lib&quot;,
     &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
+  },
+  &quot;keyToStringList&quot;: {
+    &quot;DatabaseDriversLRU&quot;: [
+      &quot;mysql&quot;,
+      &quot;mongo&quot;
+    ]
   }
 }</component>
   <component name="ReactDesignerToolWindowState">
@@ -73,6 +87,9 @@
       <workItem from="1710161866041" duration="877000" />
       <workItem from="1710750043671" duration="10182000" />
       <workItem from="1710765153083" duration="948000" />
+      <workItem from="1710769434466" duration="1619000" />
+      <workItem from="1710771066640" duration="43000" />
+      <workItem from="1710771407429" duration="1628000" />
     </task>
     <servers />
   </component>
