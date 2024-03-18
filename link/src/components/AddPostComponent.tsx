@@ -10,7 +10,7 @@ function AddPostComponent(): React.JSX.Element {
         const postContent = form.elements.namedItem('postContent') as HTMLInputElement;
 
         const newPost : PostType = {
-            id: Math.random().toString(36).substr(2, 9),
+            _id: Math.random().toString(36).substr(2, 9),
             author: '65ef0ca6a2f5fd42b4e4be75',
             date: new Date().toDateString(),  
             content: postContent.value,
@@ -26,7 +26,7 @@ function AddPostComponent(): React.JSX.Element {
     const initialUsername = "O";
 
     return (
-        <div style={{background:"black", width:"800px", border: '0.5px solid grey'}}>
+        <div style={{background:"black", width:"800px", border: '0.5px solid grey', borderRadius: '5px'}}>
         <form method="post" onSubmit={handleSubmit} style={{display:'flex', flexDirection:'row', justifyContent: 'center',alignItems: 'center' }} >
             <Avatar sx={{ bgcolor: 'white', padding:'10px', margin:'5px'}} aria-label="recipe">
                 <Typography variant="subtitle2" color="black">

@@ -8,6 +8,22 @@ const getUsers = async () => {
   return response.json();
 }
 
+const searchUsers = async (searchTerm : string) => {
+
+  const userList = await getUsers();
+  const filteredUsers = userList.filter((user: { username: string; })  => {
+      return user.username.toLowerCase().includes(searchTerm.toLowerCase());
+  });
+
+  const results: string[] = [];
+
+  filteredUsers.map((user: UserType) => {
+    return results.push(user.username);
+  });
+
+  return results;
+}
+
 const getUserById = async (id: string) => {
   const response = await fetch(`http://localhost:3000/user/${id}`);
   const userData = await response.json();
@@ -19,6 +35,8 @@ const getUserById = async (id: string) => {
   }
   return user;
 }
+
+
 
 const getPosts = async () => {
   const response = await fetch('http://localhost:3000/posts');
@@ -98,5 +116,5 @@ const getCommentById = async (id: string) => {
 
 
 
-export { getUsers, getUserById, getPosts, createPost, createComment, getCommentById };
+export { getUsers, getUserById, getPosts, createPost, createComment, getCommentById, searchUsers };
 
