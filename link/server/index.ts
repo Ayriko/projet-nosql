@@ -1,12 +1,12 @@
 import express from 'express';
 import bodyParser from 'body-parser';
-import UserMongo from './models/userMongo.ts';
-import { User } from './type/user.ts';
+import User from './models/user.ts';
 import jwt from 'jsonwebtoken';
 import bcrypt from 'bcrypt';
 import Post from './models/post';
 import cors from 'cors';
 import Comment from './models/comment';
+import UserType from '../src/models/user.ts';
 
 const app = express();
 const port = 3000;
@@ -18,8 +18,8 @@ app.get('/', (_, res) => {
   res.send('Hello World!');
 });
 
-app.get('/users', (req, res) => {
-  UserMongo.find()
+app.get('/users', (_, res) => {
+  User.find()
     .then((users) => {
       res.send(users);
     })
@@ -28,7 +28,7 @@ app.get('/users', (req, res) => {
 
 app.get('/user/:id', (req, res) => {
   const id = req.params.id;
-  UserMongo.findById(id)
+  User.findById(id)
     .then((user) => {
       res.send(user);
     })
@@ -37,7 +37,7 @@ app.get('/user/:id', (req, res) => {
 
 app.post('/login', (req, res) => {
   const params: {email: string, password: string} = req.body
-  UserMongo.findOne({email: params.email}).then(async (user) => {
+  User.findOne({email: params.email}).then(async (user) => {
     if (!user?.password) {
       return res.status(400).send({
         message: 'This is an error!'
@@ -56,11 +56,11 @@ app.post('/login', (req, res) => {
 })
 
 app.post('/createUser',  async (req, res) => {
-  const newUser: User = req.body
+  const newUser: UserType = req.body
   newUser.password  = await bcrypt.hash(newUser.password, 10)
-  const user = await UserMongo.create(newUser)
+  const user = await User.create(newUser)
   const token = jwt.sign({id: user._id.toString()}, "secret")
-  UserMongo.find()
+  User.find()
     .then(() => {
       res.send({'token': token});
     })
@@ -117,6 +117,19 @@ app.post('/addcommenttopost/:id', async (req, res) =>  {
       { new: true }
     );
     res.send('Comment added to post');
+});
+
+app.post('/updatelikespost/:id', async (req, res) =>  {
+  const id = req.params.id;
+  const postlikes = req.body.likes;
+  await Post.findOneAndUpdate(
+    { _id: id },
+    {
+      $set: {"likes": postlikes}
+    },
+    { new: true }
+  );
+  res.send('Likes updated on post');
 });
 
 

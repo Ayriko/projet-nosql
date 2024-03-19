@@ -1,10 +1,24 @@
 import CommentType from "../models/comment";
 import PostType from "../models/post";
+import UserType from "../models/user";
+import SearchResult from "../models/searchResults";
 
 
 const getUsers = async () => {
   const response = await fetch('http://localhost:3000/users');
   return response.json();
+}
+
+const createUser = async (user: any) => {
+  const res = fetch('http://localhost:3000/createUser', {
+            method: 'post',
+            headers: {'Content-Type':'application/json;charset=utf-8'},
+            body: user
+  });
+  res.then( async (response: Response) => {
+      const token = await response.json()
+      localStorage.setItem('Authentification', token.token)
+  })
 }
 
 const searchUsers = async (searchTerm : string) => {
@@ -14,11 +28,13 @@ const searchUsers = async (searchTerm : string) => {
       return user.username.toLowerCase().includes(searchTerm.toLowerCase());
   });
 
-  const results: string[] = [];
+  const results: SearchResult[] = [];
 
   filteredUsers.map((user: UserType) => {
-    return results.push(user.username);
+    results.push({username: user.username, id: user._id});
   });
+
+  
 
   return results;
 }
@@ -50,13 +66,25 @@ const getPosts = async () => {
 const getPostsByAuthorId = async (authorId: string) => {
   try {
     const postsList = await getPosts();
-    const filteredPosts = postsList.filter((post: { author: string; }) => post.author === authorId);
+    const filteredPosts = postsList.filter((post: { authorId: string; }) => post.authorId === authorId);
     return filteredPosts;
   } catch (error) {
     console.error('Erreur lors de la récupération des posts :', error);
     throw error; 
   }
 };
+
+const updateLikesPost = async (postId : string, likes: number) => {
+  await fetch(`http://localhost:3000/updatelikespost/${postId}`, {
+    method: 'POST',
+    body: JSON.stringify({
+      likes: likes
+   }),
+   headers: {
+    'Content-type': 'application/json; charset=UTF-8'
+  },
+  })
+}
 
 
 
@@ -137,5 +165,5 @@ const getCommentById = async (id: string) => {
 
 
 
-export { getUsers, getUserById, getPosts, createPost, createComment, getCommentById, searchUsers, getPostsByAuthorId };
+export { getUsers, getUserById, getPosts, createPost, createComment, getCommentById, searchUsers, getPostsByAuthorId, createUser, updateLikesPost };
 

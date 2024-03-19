@@ -11,19 +11,11 @@ import NotificationsIcon from '@mui/icons-material/Notifications';
 import {Link, useNavigate} from 'react-router-dom';
 import SearchBarComponent from './SearchBarComponent';
 import {useEffect} from "react";
-
-const linkStyle = {
-    margin: "1rem",
-    textDecoration: "none",
-    color: 'white'
-};
-
-const linkStyle2 = {
-    textDecoration: "none",
-    color: 'black'
-};
+import { getUserById } from '../client/client';
+import { useUserContext } from '../contexts/UserContext';
 
 export default function Navbar() {
+    const { setUser } = useUserContext();
     const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
     const [mobileMoreAnchorEl, setMobileMoreAnchorEl] =
         React.useState<null | HTMLElement>(null);
@@ -49,6 +41,11 @@ export default function Navbar() {
         }).join(''));
 
         setMeId(JSON.parse(jsonPayload).id);
+        getUserById(JSON.parse(jsonPayload).id).then((user) => {
+            setUser(user);
+        });
+       
+
     }, []);
 
     const handleProfileMenuOpen = (event: React.MouseEvent<HTMLElement>) => {
@@ -170,4 +167,15 @@ export default function Navbar() {
         </Box>
     );
 }
+
+const linkStyle = {
+    margin: "1rem",
+    textDecoration: "none",
+    color: 'white'
+};
+
+const linkStyle2 = {
+    textDecoration: "none",
+    color: 'black'
+};
 

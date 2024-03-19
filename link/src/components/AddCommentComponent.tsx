@@ -2,15 +2,19 @@ import React from 'react';
 import { Button,Typography, Avatar, Card } from '@mui/material';
 import CommentType from '../models/comment';
 import { createComment } from '../client/client';
+import { useUserContext } from '../contexts/UserContext';
 
 function AddCommentComponent({postId } : {postId : string}): React.JSX.Element {
+
+    const { user } = useUserContext();
+
     const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
         const form = event.currentTarget;
         const commentContent = form.elements.namedItem('commentContent') as HTMLInputElement;
 
         const newComment : CommentType = {
-            id: Math.random().toString(36).substr(2, 9),
+            id: "",
             author: '65ef0ca6a2f5fd42b4e4be75',
             postId: postId,
             date: new Date().toDateString(),
@@ -22,14 +26,13 @@ function AddCommentComponent({postId } : {postId : string}): React.JSX.Element {
 
 
 
-    const initialUsername = "O";
 
     return (
         <Card sx={{ margin: '5px', background : 'black', border: '0.5px solid grey'}}>
             <form method="post" onSubmit={handleSubmit} style={{display:'flex', flexDirection:'row', justifyContent: 'center',alignItems: 'center' }} >
                 <Avatar sx={{ bgcolor: 'white', marginLeft:'5px', marginRight:'5px'}} aria-label="recipe">
                     <Typography variant="subtitle2" color="black">
-                    {initialUsername}
+                    {user.username.charAt(0).toUpperCase()}
                     </Typography>
                 </Avatar>
                 <textarea
