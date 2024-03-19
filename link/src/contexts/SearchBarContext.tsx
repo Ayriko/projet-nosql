@@ -1,12 +1,13 @@
 import React, {
     createContext, type Dispatch, type SetStateAction, useContext, useState,
   } from 'react';
+import SearchResult from '../models/searchResults';
 
   
   interface SearchBarContextProps {
 
-    searchBarResult: string[];
-    setSearchBarResult: Dispatch<SetStateAction<string[]>>;
+    searchBarResult: SearchResult[];
+    setSearchBarResult: Dispatch<SetStateAction<SearchResult[]>>;
 
   }
   
@@ -14,7 +15,7 @@ import React, {
   
   function SearchBarProvider({ children }: { children: React.ReactNode }) {
 
-    const [searchBarResult, setSearchBarResult] = useState<string[]>([]);
+    const [searchBarResult, setSearchBarResult] = useState<SearchResult[]>([]);
   
     return (
       <SearchBarContext.Provider value={{

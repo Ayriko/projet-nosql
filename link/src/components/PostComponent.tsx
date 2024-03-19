@@ -12,19 +12,24 @@ import ChatBubbleOutlineIcon from '@mui/icons-material/ChatBubbleOutline';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
 import { Divider } from '@mui/material';
 import PostType from '../models/post';
-import { getUserById } from '../client/client';
+import { getUserById, updateLikesPost } from '../client/client';
 import { useEffect, useState } from 'react';
 import { Grid, Menu, MenuItem } from '@mui/material';
 import CommentComponent from './CommentComponent.tsx';
 import AddCommentComponent from './AddCommentComponent.tsx';
 import getTimeAgo from '../utils/timeAgo.ts';
 import { Link } from 'react-router-dom';
+import { useUserContext } from '../contexts/UserContext.tsx';
 
 
 export default function PostComponent({post}: {post: PostType}) {
+    const { user } = useUserContext();
+
+
     const [expanded, setExpanded] = React.useState(false);
     const [anchorEl, setAnchorEl] = React.useState(null);
     const [authorUsername, setAuthorUsername] = useState("");
+    const [isLiked, setIsLiked] = useState(false);
 
     useEffect(() => {
         getUserById(post.authorId)
@@ -54,6 +59,16 @@ export default function PostComponent({post}: {post: PostType}) {
         setAnchorEl(null);
     };
 
+    const handleLike = () => {
+        setIsLiked(!isLiked);
+        if (isLiked) {
+            post.likes -= 1;
+        } else {
+            post.likes += 1;
+        }
+        updateLikesPost(post._id, post.likes);
+    }
+
     return (
         <Card sx={{ width: 800, margin: 'auto', background : 'black', border: '0.5px solid grey'}}>
             <CardHeader
@@ -76,16 +91,19 @@ export default function PostComponent({post}: {post: PostType}) {
                     </Grid>
                 }
                 action={
+            
                     <>
-                        <IconButton aria-label="settings" onClick={handleMenuClick} sx={{color : 'grey'}}>
+                      {post.authorId === user._id && (
+                        <IconButton aria-label="settings" onClick={handleMenuClick} sx={{ color: 'grey' }}>
                         <MoreVertIcon />
                         </IconButton>
+                        )}
                         <Menu anchorEl={anchorEl} open={Boolean(anchorEl)} onClose={handleMenuClose}>
                             <MenuItem onClick={handleMenuClose}>Editer</MenuItem>
                             <MenuItem onClick={handleMenuClose}>Supprimer</MenuItem>
-                            <MenuItem onClick={handleMenuClose}>Bloquer</MenuItem>
                         </Menu>
                     </>
+                    
                 }
             />
             <CardContent sx={{ padding: 1}}>
@@ -94,7 +112,7 @@ export default function PostComponent({post}: {post: PostType}) {
                 </Typography>
             </CardContent>
             <CardActions disableSpacing>
-                <IconButton aria-label="add to likes" sx={{color : 'white'}}>
+                <IconButton aria-label="add to likes" sx={{color : isLiked ? 'red' : 'white'}} onClick={handleLike}>
                     <FavoriteOutlineIcon />
                 </IconButton>
                 <Typography color="white">

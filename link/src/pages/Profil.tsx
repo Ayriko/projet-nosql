@@ -11,6 +11,8 @@ function Profil(): React.JSX.Element {
     const navigate = useNavigate();
     const { userId } = useParams();
 
+    console.log(userId);
+
     useEffect(() => {
         const fetchPosts = async () => {
             try {
@@ -28,6 +30,8 @@ function Profil(): React.JSX.Element {
         fetchPosts();
     }, []);
 
+    console.log(posts);
+
     if (userId) {
         return (
           <div>
@@ -36,7 +40,7 @@ function Profil(): React.JSX.Element {
               {
                   posts.slice().reverse().map((post: PostType, index: number) => {
                       return (
-                        <div key={index}>
+                        <div key={index} style={{margin:'10px'}}>
                             <PostComponent post={post}/>
                         </div>
                       );
@@ -45,6 +49,7 @@ function Profil(): React.JSX.Element {
           </div>
         );
     }
+    return <div></div>;
 }
 
 export default Profil;

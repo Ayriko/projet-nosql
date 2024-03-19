@@ -14,9 +14,6 @@ import UserType from '../models/user';
   function UserProvider({ children }: { children: React.ReactNode }) {
 
     const [user, setUser] = useState<UserType>({} as UserType);
-    useEffect(() => {
-        
-    }, []);
 
   
     return (

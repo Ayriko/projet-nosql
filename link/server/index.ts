@@ -119,6 +119,19 @@ app.post('/addcommenttopost/:id', async (req, res) =>  {
     res.send('Comment added to post');
 });
 
+app.post('/updatelikespost/:id', async (req, res) =>  {
+  const id = req.params.id;
+  const postlikes = req.body.likes;
+  await Post.findOneAndUpdate(
+    { _id: id },
+    {
+      $set: {"likes": postlikes}
+    },
+    { new: true }
+  );
+  res.send('Likes updated on post');
+});
+
 
 // COMMENTS
 app.post('/comment', (req, res) => {
