@@ -7,6 +7,7 @@ import Post from './models/post';
 import cors from 'cors';
 import Comment from './models/comment';
 import UserType from '../src/models/user.ts';
+import UserMongo from "./models/user.ts";
 
 const app = express();
 const port = 3000;
@@ -55,15 +56,17 @@ app.post('/login', (req, res) => {
   })
 })
 
-app.post('/createUser',  async (req, res) => {
-  const newUser: UserType = req.body
-  newUser.password  = await bcrypt.hash(newUser.password, 10)
-  const user = await User.create(newUser)
-  const token = jwt.sign({id: user._id.toString()}, "secret")
-  User.find()
-    .then(() => {
-      res.send({'token': token});
-    })
+app.post('/register',  async (req, res) => {
+  const cryptedPassword  = await bcrypt.hash(req.body.password, 10)
+  const user = new UserMongo({
+    email: req.body.email,
+    password: cryptedPassword,
+    username: req.body.username,
+  })
+  user.save().then((user) => {
+    const token = jwt.sign({id: user._id.toString()}, "secret")
+    res.send({'token': token});
+  })
 })
 
 // POSTS
