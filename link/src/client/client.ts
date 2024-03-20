@@ -41,6 +41,14 @@ const loginClient = async (user) => {
   return res.json()
 }
 
+const test = async (pouet: string) => {
+  const res = await fetch('http://localhost:3000/test', {
+    method: 'post',
+    headers: {'Content-Type':'application/json;charset=utf-8'},
+    body: pouet
+  })
+}
+
 const searchUsers = async (searchTerm : string) => {
   const userList = await getUsers();
   const filteredUsers = userList.filter((user: { username: string; })  => {
@@ -181,5 +189,5 @@ const getCommentById = async (id: string) => {
 
 
 
-export { decodeToken, getUsers, getUserById, getPosts, createPost, createComment, getCommentById, searchUsers, getPostsByAuthorId, createUser, updateLikesPost, loginClient };
+export { test, decodeToken, getUsers, getUserById, getPosts, createPost, createComment, getCommentById, searchUsers, getPostsByAuthorId, createUser, updateLikesPost, loginClient };
 

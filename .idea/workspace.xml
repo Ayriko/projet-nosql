@@ -6,11 +6,11 @@
   <component name="ChangeListManager">
     <list default="true" id="8aaec906-6bfe-48a3-8480-ab29cb32f21d" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/link/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/link/package-lock.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/link/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/link/package.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/link/server/index.ts" beforeDir="false" afterPath="$PROJECT_DIR$/link/server/index.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/link/src/client/client.ts" beforeDir="false" afterPath="$PROJECT_DIR$/link/src/client/client.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/link/src/components/Navbar.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/link/src/components/Navbar.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/link/src/components/SignIn.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/link/src/components/SignIn.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/link/src/components/SignUp.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/link/src/components/SignUp.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/link/src/components/PostComponent.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/link/src/components/PostComponent.tsx" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -88,6 +88,7 @@
       <workItem from="1710771066640" duration="43000" />
       <workItem from="1710771407429" duration="1628000" />
       <workItem from="1710924680659" duration="6038000" />
+      <workItem from="1710946527041" duration="3260000" />
     </task>
     <servers />
   </component>

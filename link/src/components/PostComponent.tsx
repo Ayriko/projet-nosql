@@ -12,7 +12,7 @@ import ChatBubbleOutlineIcon from '@mui/icons-material/ChatBubbleOutline';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
 import { Divider } from '@mui/material';
 import PostType from '../models/post';
-import { getUserById, updateLikesPost } from '../client/client';
+import {decodeToken, getUserById, test, updateLikesPost} from '../client/client';
 import { useEffect, useState } from 'react';
 import { Grid, Menu, MenuItem } from '@mui/material';
 import CommentComponent from './CommentComponent.tsx';
@@ -44,9 +44,6 @@ export default function PostComponent({post}: {post: PostType}) {
 
     const date = getTimeAgo(post.date);
 
-
-
-
     const handleExpandClick = () => {
         setExpanded(!expanded);
     };
@@ -60,6 +57,9 @@ export default function PostComponent({post}: {post: PostType}) {
     };
 
     const handleLike = () => {
+        const tokenPayload = decodeToken()
+
+        test(JSON.stringify({postId: post._id, meId: tokenPayload.id}))
         setIsLiked(!isLiked);
         if (isLiked) {
             post.likes -= 1;
@@ -91,7 +91,7 @@ export default function PostComponent({post}: {post: PostType}) {
                     </Grid>
                 }
                 action={
-            
+
                     <>
                       {post.authorId === user._id && (
                         <IconButton aria-label="settings" onClick={handleMenuClick} sx={{ color: 'grey' }}>
@@ -103,7 +103,7 @@ export default function PostComponent({post}: {post: PostType}) {
                             <MenuItem onClick={handleMenuClose}>Supprimer</MenuItem>
                         </Menu>
                     </>
-                    
+
                 }
             />
             <CardContent sx={{ padding: 1}}>

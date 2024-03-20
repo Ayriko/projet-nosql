@@ -6,8 +6,16 @@ import bcrypt from 'bcrypt';
 import Post from './models/post';
 import cors from 'cors';
 import Comment from './models/comment';
-import UserType from '../src/models/user.ts';
 import UserMongo from "./models/user.ts";
+import neo4j from 'neo4j-driver';
+
+const driver = neo4j.driver(
+  'bolt://localhost:7687',
+  neo4j.auth.basic('neo4j', 'password')
+)
+
+// Open a new Session
+const session = driver.session()
 
 const app = express();
 const port = 3000;
@@ -55,6 +63,27 @@ app.post('/login', (req, res) => {
     res.send({'token': token});
   })
 })
+
+app.post('/test', async (req, res) => {
+  console.log(req.body)
+  session.run(`
+      CREATE (u:User {id: $meId})
+      CREATE (c:Comment {id: $postId})
+      WITH u, c
+      MATCH (a:User {id: $meId}), (b:Comment {id: $postId})
+      CREATE (a)-[:A_LIKE]->(b)
+      RETURN u
+    `,
+    {
+      meId: req.body.meId,
+      postId: req.body.postId
+    }).then((result => {
+      result.records.forEach((record) => {
+        console.log(record.get('u').properties)
+        res.send();
+      })
+  }))
+});
 
 app.post('/register',  async (req, res) => {
   const cryptedPassword  = await bcrypt.hash(req.body.password, 10)
