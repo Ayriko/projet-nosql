@@ -12,6 +12,7 @@ import { ThemeProvider } from '@mui/material/styles';
 import {Link as RLink, useNavigate} from "react-router-dom";
 import {useEffect} from "react";
 import theme from '../theme/theme';
+import {loginClient} from "../client/client.ts";
 
 
 
@@ -23,22 +24,15 @@ export default function SignIn() {
             navigate('/')
     }, [navigate]);
 
-    const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+    const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
         const formData = new FormData(event.currentTarget);
         const data = JSON.stringify({
             email: formData.get('email'),
             password: formData.get('password')
         })
-        const res = fetch('http://localhost:3000/login', {
-            method: 'post',
-            headers: {'Content-Type':'application/json;charset=utf-8'},
-            body: data
-        });
-        res.then( async (response: Response) => {
-            const token = await response.json()
-            localStorage.setItem('Authentification', token.token)
-        })
+        const token = await loginClient(data)
+        localStorage.setItem('Authentification', token.token)
         navigate('/')
     };
 
@@ -78,12 +72,12 @@ export default function SignIn() {
                             autoFocus
                             InputProps={{
                                 style: {
-                                    color: 'white', 
-                                    borderColor: 'white', 
+                                    color: 'white',
+                                    borderColor: 'white',
                                 },
                                 sx: {
                                     '& .MuiOutlinedInput-notchedOutline': {
-                                        borderColor: 'white !important', 
+                                        borderColor: 'white !important',
                                     },
                                 },
                             }}
@@ -98,12 +92,12 @@ export default function SignIn() {
                             id="password"
                             InputProps={{
                                 style: {
-                                    color: 'white', 
+                                    color: 'white',
                                     borderColor: 'white',
                                 },
                                 sx: {
                                     '& .MuiOutlinedInput-notchedOutline': {
-                                        borderColor: 'white !important', 
+                                        borderColor: 'white !important',
                                     },
                                 },
                             }}

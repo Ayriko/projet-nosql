@@ -11,7 +11,7 @@ import NotificationsIcon from '@mui/icons-material/Notifications';
 import {Link, useNavigate} from 'react-router-dom';
 import SearchBarComponent from './SearchBarComponent';
 import {useEffect} from "react";
-import { getUserById } from '../client/client';
+import {decodeToken, getUserById} from '../client/client';
 import { useUserContext } from '../contexts/UserContext';
 
 export default function Navbar() {
@@ -29,22 +29,18 @@ export default function Navbar() {
     useEffect(() => {
         const token = localStorage.getItem('Authentification')
         if (!token) {
-            navigate('register');
+            navigate('/register');
 
             return;
         }
 
-        const base64Url = token.split('.')[1];
-        const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
-        const jsonPayload = decodeURIComponent(window.atob(base64).split('').map(function(c) {
-            return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
-        }).join(''));
+        const tokenPayload = decodeToken()
 
-        setMeId(JSON.parse(jsonPayload).id);
-        getUserById(JSON.parse(jsonPayload).id).then((user) => {
+        setMeId(tokenPayload.id);
+        getUserById(tokenPayload.id).then((user) => {
             setUser(user);
         });
-       
+
 
     }, []);
 
@@ -60,6 +56,12 @@ export default function Navbar() {
         setAnchorEl(null);
         handleMobileMenuClose();
     };
+
+    const logout = () => {
+        localStorage.removeItem('Authentification')
+        handleMenuClose()
+        navigate('/login')
+    }
 
     const menuId = 'primary-search-account-menu';
     const renderMenu = (
@@ -80,7 +82,7 @@ export default function Navbar() {
         >
             <MenuItem onClick={handleMenuClose}><Link to={"/login"} style={linkStyle2}>Login</Link></MenuItem>
             <MenuItem onClick={handleMenuClose}><Link to={`/profil/${meId}`} style={linkStyle2}>Profil</Link></MenuItem>
-            <MenuItem onClick={handleMenuClose}>Logout</MenuItem>
+            <MenuItem onClick={logout}>Logout</MenuItem>
         </Menu>
     );
 

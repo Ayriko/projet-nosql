@@ -22,22 +22,19 @@ export default function SignUp() {
     useEffect(() => {
         if (localStorage.getItem('Authentification'))
             navigate('/')
-    }, [navigate]);
+    }, []);
 
-    const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
-        const formData = new FormData(event.currentTarget);
-        const newUser = JSON.stringify({
+    const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
+      event.preventDefault();
+      const formData = new FormData(event.currentTarget);
+        const data = JSON.stringify({
             username: formData.get('username'),
             email: formData.get('email'),
             password: formData.get('password')
         })
-        try {
-            createUser(newUser);
-            navigate('/')
-            event.preventDefault();
-        } catch (error) {
-            console.error('Error:', error);
-        }
+        const token = await createUser(data);
+        localStorage.setItem('Authentification', token.token)
+        navigate('/')
     };
 
     return (
@@ -65,7 +62,7 @@ export default function SignUp() {
                     <Typography component="h1" variant="h5">
                         Sign up
                     </Typography>
-                    <Box component="form" noValidate onSubmit={handleSubmit} sx={{ mt: 3 }}>
+                    <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 3 }}>
                         <Grid container spacing={2}>
                             <Grid item xs={12}>
                                 <TextField
