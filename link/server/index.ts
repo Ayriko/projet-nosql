@@ -8,14 +8,20 @@ import cors from 'cors';
 import Comment from './models/comment';
 import UserMongo from "./models/user.ts";
 import neo4j from 'neo4j-driver';
+import {createClient} from 'redis';
 
 const driver = neo4j.driver(
   'bolt://localhost:7687',
   neo4j.auth.basic('neo4j', 'password')
 )
 
-// Open a new Session
+// Open a new neo4j Session
 const session = driver.session()
+
+//redis
+const client = createClient();
+client.on('error', err => console.log('Redis Client Error', err));
+await client.connect();
 
 const app = express();
 const port = 3000;

@@ -156,7 +156,7 @@ const updateLikesPost = async (postId : string, likes: number) => {
    }),
    headers: {
     'Content-type': 'application/json; charset=UTF-8'
-  },
+   },
   })
 }
 
