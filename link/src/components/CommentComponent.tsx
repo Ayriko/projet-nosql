@@ -20,17 +20,17 @@ function CommentComponent({commentId}: {commentId: string}) {
                 console.error("Erreur lors de la récupération du commentaire :", error);
                 return setComment(undefined);
             });
-    }, [comment]);
+    }, []);
 
 
     useEffect(() => {
         getUserById(comment?.author!)
             .then(user => {
-                setAuthorUsername(user.username); 
+                setAuthorUsername(user.username);
             })
             .catch(error => {
                 console.error("Erreur lors de la récupération de l'utilisateur :", error);
-                setAuthorUsername("Unknown"); 
+                setAuthorUsername("Unknown");
             });
     }, [comment]);
 
@@ -59,7 +59,7 @@ function CommentComponent({commentId}: {commentId: string}) {
                     </div>
                 }
             />
-            
+
         </Card>
     );
 }

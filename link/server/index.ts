@@ -373,28 +373,45 @@ app.get('/post/:id', (req, res) => {
 });
 
 
-app.post('/addcommenttopost/:id', async (req, res) =>  {
+app.post('/addCommentToPost/:id', async (req, res) =>  {
     const id = req.params.id;
-    await Post.findOneAndUpdate(
+    const updatedPost = await Post.findOneAndUpdate(
       { _id: id },
       {
         $push: {"comments": req.body.commentId}
       },
       { new: true }
     );
-    res.send('Comment added to post');
+
+  // Mettre à jour le cache Redis avec le post mis à jour
+  redis.set(`post:${updatedPost._id}`, JSON.stringify(updatedPost), (err, result) => {
+    if (err) {
+      console.error('Error updating post in Redis:', err);
+    }
+    console.log('Post updated in Redis:', result);
+  });
+
+  res.send('Comment added to post');
 });
 
-app.post('/updatelikespost/:id', async (req, res) =>  {
+app.post('/updateLikesPost/:id', async (req, res) =>  {
   const id = req.params.id;
-  const postlikes = req.body.likes;
-  await Post.findOneAndUpdate(
+  const postLikes = req.body.likes;
+  const updatedPost = await Post.findOneAndUpdate(
     { _id: id },
     {
-      $set: {"likes": postlikes}
+      $set: {"likes": postLikes}
     },
     { new: true }
   );
+
+  redis.set(`post:${updatedPost._id}`, JSON.stringify(updatedPost), (err, result) => {
+    if (err) {
+      console.error('Error updating post in Redis:', err);
+    }
+    console.log('Post updated in Redis:', result);
+  });
+
   res.send('Likes updated on post');
 });
 
@@ -408,24 +425,50 @@ app.post('/comment', (req, res) => {
     postId: req.body.postId
   });
   comment.save()
-    .then( async (comment) => {
-      await session.run(
-`
-      CREATE (c:Comment {id: $postId})
-      `,
-        {postId: comment._id.toString()})
+    .then((comment) => {
+      redis.set(`comment:${comment._id}`, JSON.stringify(comment), (err, result) => {
+        if (err) {
+          console.error('Error saving comment in cache:', err);
+        }
+        console.log('Comment saved in cache:', result);
+      });
       res.send(comment);
     })
     .catch((error) => console.error('Error creating comment:', error));
 });
 
 app.get('/comment/:id', (req, res) => {
-  const id = req.params.id;
-  Comment.findById(id)
-    .then((comment) => {
-      res.send(comment);
-    })
-    .catch((error) => console.error('Error fetching comment:', error));
+  const commentId = req.params.id;
+
+  redis.get(`comment:${commentId}`, (err, result) => {
+    if (err) {
+      console.error('Error fetching comment from cache:', err);
+    }
+
+    if (result) {
+      console.log('Comment returned from cache:', result);
+      res.send(JSON.parse(result));
+    } else {
+      Comment.findById(commentId)
+          .then((comment) => {
+            if (!comment) {
+              res.status(404).send({message: 'Comment not found'});
+            } else {
+              redis.set(`comment:${comment._id.toString()}`, JSON.stringify(comment), (err, result) => {
+                if (err) {
+                  console.error('Error saving comment in cache:', err);
+                }
+                console.log('Comment saved in cache:', result);
+              });
+              res.send(comment);
+            }
+          })
+          .catch((error) => {
+            console.error('Error fetching comment from MongoDB:', error);
+            res.status(500).send({message: 'Error fetching comment'});
+          });
+    }
+  });
 });
 
 app.listen(port, () => {
