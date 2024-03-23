@@ -8,7 +8,7 @@ import cors from 'cors';
 import Comment from './models/comment';
 import UserMongo from "./models/user.ts";
 import neo4j from 'neo4j-driver';
-import {createClient} from 'redis';
+import { Redis } from 'ioredis';
 
 const driver = neo4j.driver(
   'bolt://localhost:7687',
@@ -18,10 +18,8 @@ const driver = neo4j.driver(
 // Open a new neo4j Session
 const session = driver.session()
 
-//redis
-const client = createClient();
-client.on('error', err => console.log('Redis Client Error', err));
-await client.connect();
+//ioredis
+const redis = new Redis();
 
 const app = express();
 const port = 3000;
@@ -233,23 +231,6 @@ app.post('/register',  async (req, res) => {
 })
 
 // POSTS
-app.get('/posts', (_, res) => {
-  Post.find()
-    .then((posts) => {
-      res.send(posts);
-    })
-    .catch((error) => console.error('Error fetching posts:', error));
-});
-
-app.get('/post/:id', (req, res) => {
-  const id = req.params.id;
-  Post.findById(id)
-    .then((post) => {
-      res.send(post);
-    })
-    .catch((error) => console.error('Error fetching post:', error));
-});
-
 app.post('/post', (req, res) => {
   const bearerAuth = req.headers.authorization;
   if (!bearerAuth) {
@@ -266,6 +247,7 @@ app.post('/post', (req, res) => {
     likes: req.body.likes,
     comments: req.body.comments
   });
+
   post.save()
     .then( async (post) => {
       await session.run(`
@@ -275,12 +257,123 @@ app.post('/post', (req, res) => {
       CREATE (u)-[:A_POSTE]->(p)
       `,
         {postId: post._id.toString(), $postId: post._id.toString(), userId: post.authorId})
+      redis.set(`post:${post._id}`, JSON.stringify(post), (err, result) => {
+        if (err) {
+          console.error('Error saving post in cache:', err);
+        }
+        console.log('Post saved in cache:', result);
+      });
+      redis.sadd('posts:keys', `post:${post._id}`, (err, result) => {
+        if (err) {
+          console.error('Error adding post key to Post Set:', err);
+        }
+        console.log('Post key added to Post Set:', result);
+      });
       res.send(post);
     })
     .catch((error) => console.error('Error creating post:', error));
 });
 
-app.post('/addCommentToPost/:id', async (req, res) =>  {
+app.get('/posts', (_, res) => {
+  // on récupère les clés des posts stockés dans le set
+  redis.smembers('posts:keys', (err, keys) => {
+    if (err || keys.length === 0) {
+      console.error('Error fetching post keys from Post Set:', err);
+      // Récupérer les posts depuis MongoDB
+      Post.find({})
+          .then(posts => {
+            // Mettre en cache tous les posts dans Redis
+            posts.forEach(post => {
+              redis.set(`post:${post._id}`, JSON.stringify(post), (err, result) => {
+                if (err) {
+                  console.error('Error adding post to Redis:', err);
+                }
+                console.log('Post added to Redis:', result);
+                // Ajouter la clé du post dans le set
+                redis.sadd('posts:keys', `post:${post._id}`, (err, result) => {
+                  if (err) {
+                    console.error('Error adding post key to Redis Set:', err);
+                  }
+                  console.log('Post key added to Post Set:', result);
+                });
+              });
+            });
+            res.send(posts);
+          })
+          .catch(error => {
+            console.error('Error fetching posts from MongoDB:', error);
+            res.status(500).send({ message: 'Error fetching posts' });
+          });
+    } else {
+      // Récupérer les posts à partir des clés
+      const postPromises = keys.map(key => {
+        return new Promise((resolve, reject) => {
+          redis.get(key, (err, post) => {
+            if (err) {
+              reject(err);
+            }
+            if (post != null) {
+              resolve(JSON.parse(post));
+            }
+          });
+        });
+      });
+
+      // Renvoyer tous les posts
+      Promise.all(postPromises)
+          .then(posts => {
+            res.send(posts);
+          })
+          .catch(error => {
+            console.error('Error fetching posts from Redis:', error);
+            res.status(500).send({ message: 'Error fetching posts' });
+          });
+    }
+  });
+});
+
+app.get('/post/:id', (req, res) => {
+  const postId = req.params.id;
+
+  // Check if the post is available in the cache
+  redis.get(`post:${postId}`, (err, result) => {
+    if (err) {
+      console.error('Error fetching post from cache:', err);
+    }
+
+    if (result) {
+      // If the post is in the cache, return it
+      console.log('Post returned from cache:', result);
+      res.send(JSON.parse(result));
+    } else {
+      // If the post is not in the cache, fetch it from MongoDB
+      Post.findById(postId)
+          .then((post) => {
+            if (!post) {
+              res.status(404).send({ message: 'Post not found' });
+            } else {
+              // Save the post in the cache
+              redis.set(`post:${post._id}`, JSON.stringify(post), (err, result) => {
+                if (err) {
+                  console.error('Error saving post in cache:', err);
+                }
+                console.log('Post saved in cache:', result);
+              });
+
+              // Return the post
+              res.send(post);
+            }
+          })
+          .catch((error) => {
+            console.error('Error fetching post from MongoDB:', error);
+            res.status(500).send({ message: 'Error fetching post' });
+          });
+    }
+  });
+});
+
+
+app.post('/addcommenttopost/:id', async (req, res) =>  {
     const id = req.params.id;
     await Post.findOneAndUpdate(
       { _id: id },

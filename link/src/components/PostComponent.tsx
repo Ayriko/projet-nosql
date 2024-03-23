@@ -31,8 +31,6 @@ import { useUserContext } from '../contexts/UserContext.tsx';
 
 export default function PostComponent({post}: {post: PostType}) {
     const { user } = useUserContext();
-
-
     const [expanded, setExpanded] = React.useState(false);
     const [anchorEl, setAnchorEl] = React.useState(null);
     const [authorUsername, setAuthorUsername] = useState("");
