@@ -17,7 +17,6 @@ function AddCommentComponent({postId } : {postId : string}): React.JSX.Element {
             id: "",
             author: '65ef0ca6a2f5fd42b4e4be75',
             postId: postId,
-            date: new Date().toDateString(),
             content: commentContent.value,
         }
         createComment(newComment);

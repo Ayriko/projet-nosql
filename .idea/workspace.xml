@@ -5,10 +5,14 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="8aaec906-6bfe-48a3-8480-ab29cb32f21d" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/link/src/components/UpdatePostModal.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/link/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/link/package-lock.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/link/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/link/package.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/link/server/index.ts" beforeDir="false" afterPath="$PROJECT_DIR$/link/server/index.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/link/src/client/client.ts" beforeDir="false" afterPath="$PROJECT_DIR$/link/src/client/client.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/link/src/components/CommentComponent.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/link/src/components/CommentComponent.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/link/src/components/Navbar.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/link/src/components/Navbar.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/link/src/components/PostComponent.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/link/src/components/PostComponent.tsx" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -42,7 +46,7 @@
     "ReactCreateComponentLastSelected": "functionDeclarationComponent",
     "RunOnceActivity.OpenProjectViewOnStart": "true",
     "RunOnceActivity.ShowReadmeOnStart": "true",
-    "git-widget-placeholder": "Rebasing feature/add-redis",
+    "git-widget-placeholder": "Rebasing feature/missing-crud-operations",
     "last_opened_file_path": "/home/ayriko/Bureau/nosql/projet-nosql",
     "node.js.detected.package.eslint": "true",
     "node.js.detected.package.tslint": "true",
@@ -91,7 +95,7 @@
       <workItem from="1711278607854" duration="2278000" />
       <workItem from="1711281146043" duration="3262000" />
       <workItem from="1711285050982" duration="12313000" />
-      <workItem from="1711300416059" duration="3933000" />
+      <workItem from="1711300416059" duration="4243000" />
     </task>
     <servers />
   </component>

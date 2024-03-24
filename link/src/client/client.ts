@@ -215,6 +215,44 @@ const getRecommendationAccount = async (meId: string ) => {
   return response.json()
 }
 
+const updatePost = async (postId: string, content: string) => {
+  try {
+    const response = await fetch(`http://localhost:3000/post/${postId}`, {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ content }),
+    });
+
+    if (!response.ok) {
+      throw new Error(`Error updating post: ${response.statusText}`);
+    }
+  } catch (error) {
+    console.error(error);
+    throw error;
+  }
+}
+
+
+const deletePost = async (postId: string) => {
+  try {
+    const response = await fetch(`http://localhost:3000/post/${postId}`, {
+      method: 'DELETE',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    });
+    if (!response.ok) {
+      throw new Error(`Error deleting post: ${response.statusText}`);
+    }
+  } catch (error) {
+    console.error(error);
+    throw error;
+  }
+}
+
+
 const createComment = async (comment: CommentType) => {
   const tokenPayload = decodeToken()
 
@@ -223,7 +261,6 @@ const createComment = async (comment: CommentType) => {
     body: JSON.stringify({
       author: tokenPayload.id,
       content: comment.content,
-      date: comment.date,
       postId: comment.postId
    }),
    headers: {
@@ -258,7 +295,6 @@ const getCommentById = async (id: string) => {
   const comment : CommentType = {
     id: commentData.id,
     author: commentData.author,
-    date: commentData.date,
     content: commentData.content,
     postId: commentData.postId
   }
@@ -285,6 +321,8 @@ export {
   createUser,
   unFollow,
   updateLikesPost,
-  loginClient
+  loginClient,
+  deletePost,
+  updatePost,
 };
 

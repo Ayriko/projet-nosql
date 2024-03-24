@@ -13,12 +13,12 @@ import MoreVertIcon from '@mui/icons-material/MoreVert';
 import {Button, Divider} from '@mui/material';
 import PostType from '../models/post';
 import {
-    decodeToken,
+    decodeToken, deletePost,
     dislikePost, follow,
     getFollowedAccount,
     getLike,
     getUserById,
-    likePost, unFollow
+    likePost, unFollow, updatePost
 } from '../client/client';
 import { useEffect, useState } from 'react';
 import { Grid, Menu, MenuItem } from '@mui/material';
@@ -27,9 +27,9 @@ import AddCommentComponent from './AddCommentComponent.tsx';
 import getTimeAgo from '../utils/timeAgo.ts';
 import { Link } from 'react-router-dom';
 import { useUserContext } from '../contexts/UserContext.tsx';
+import UpdatePostModal from './UpdatePostModal.tsx';
 
-
-export default function PostComponent({post}: {post: PostType}) {
+export default function PostComponent({ post }: { post: PostType }) {
     const { user } = useUserContext();
     const [expanded, setExpanded] = React.useState(false);
     const [anchorEl, setAnchorEl] = React.useState(null);
@@ -37,6 +37,7 @@ export default function PostComponent({post}: {post: PostType}) {
     const [isLiked, setIsLiked] = useState(false);
     const [like, setLike] = useState(0);
     const [isFollowed, setIsFollowed] = useState(false)
+    const [updateModalOpen, setUpdateModalOpen] = React.useState(false);
 
     const tokenPayload = decodeToken()
 
@@ -95,6 +96,32 @@ export default function PostComponent({post}: {post: PostType}) {
         }
     }
 
+    const handleEdit = () => {
+        setUpdateModalOpen(true);
+    };
+
+    const handleUpdate = (updatedContent: string) => {
+        updatePost(post._id, updatedContent)
+            .then(() => {
+                console.log('Post updated successfully');
+            })
+            .catch((error) => {
+                console.error('Error updating post:', error);
+            });
+        setUpdateModalOpen(false);
+    };
+
+    const handleDelete = () => {
+        deletePost(post._id)
+            .then(() => {
+                console.log("Post deleted successfully");
+            })
+            .catch(error => {
+                console.error("Error deleting post:", error);
+            });
+        handleMenuClose();
+    };
+
     const handleFollow = async () => {
         try {
             if (isFollowed) {
@@ -110,13 +137,13 @@ export default function PostComponent({post}: {post: PostType}) {
     }
 
     return (
-        <Card sx={{ width: 800, margin: 'auto', background : 'black', border: '0.5px solid grey'}}>
+        <Card sx={{ width: 800, margin: 'auto', background: 'black', border: '0.5px solid grey' }}>
             <CardHeader
                 avatar={
                     <Link to={`/profil/${post.authorId}`}>
                         <Avatar sx={{ bgcolor: 'white' }} aria-label="recipe">
                             <Typography variant="subtitle2" color="black">
-                            {authorUsername.charAt(0).toUpperCase()}
+                                {authorUsername.charAt(0).toUpperCase()}
                             </Typography>
                         </Avatar>
                     </Link>
@@ -126,7 +153,7 @@ export default function PostComponent({post}: {post: PostType}) {
                         <Grid item>
                             <div>
                             <Typography variant="subtitle2" color="grey">
-                               @  {authorUsername}  •  {date}
+                                @  {authorUsername}  •  {date}
                             </Typography>
                             </div>
                         </Grid>
@@ -138,28 +165,26 @@ export default function PostComponent({post}: {post: PostType}) {
                     </Grid>
                 }
                 action={
-
                     <>
-                      {post.authorId === user._id && (
-                        <IconButton aria-label="settings" onClick={handleMenuClick} sx={{ color: 'grey' }}>
-                        <MoreVertIcon />
-                        </IconButton>
+                        {post.authorId === user._id && (
+                            <IconButton aria-label="settings" onClick={handleMenuClick} sx={{ color: 'grey' }}>
+                                <MoreVertIcon />
+                            </IconButton>
                         )}
                         <Menu anchorEl={anchorEl} open={Boolean(anchorEl)} onClose={handleMenuClose}>
-                            <MenuItem onClick={handleMenuClose}>Editer</MenuItem>
-                            <MenuItem onClick={handleMenuClose}>Supprimer</MenuItem>
+                            <MenuItem onClick={handleEdit}>Edit</MenuItem>
+                            <MenuItem onClick={handleDelete}>Delete</MenuItem>
                         </Menu>
                     </>
-
                 }
             />
-            <CardContent sx={{ padding: 1}}>
+            <CardContent sx={{ padding: 1 }}>
                 <Typography variant="body1" color="white" textAlign="left">
                     {post.content}
                 </Typography>
             </CardContent>
             <CardActions disableSpacing>
-                <IconButton aria-label="add to likes" sx={{color : isLiked ? 'red' : 'white'}} onClick={handleLike}>
+                <IconButton aria-label="add to likes" sx={{ color: isLiked ? 'red' : 'white' }} onClick={handleLike}>
                     <FavoriteOutlineIcon />
                 </IconButton>
                 <Typography color="white">
@@ -168,7 +193,7 @@ export default function PostComponent({post}: {post: PostType}) {
                 <IconButton
                     aria-label="comment"
                     onClick={handleExpandClick}
-                    sx={{color : 'white'}}>
+                    sx={{ color: 'white' }}>
                     <ChatBubbleOutlineIcon />
                 </IconButton>
                 <Typography color="white">
@@ -178,22 +203,27 @@ export default function PostComponent({post}: {post: PostType}) {
             <Divider />
             <Collapse in={expanded} timeout="auto" unmountOnExit>
                 <CardContent>
-                    { post.comments.length > 0 ?
-                        post.comments.slice().reverse().map((comment : string, index : number) => {
+                    {post.comments.length > 0 ?
+                        post.comments.slice().reverse().map((comment: string, index: number) => {
                             return (
                                 <div key={index}>
-                                <CommentComponent commentId={comment} />
+                                    <CommentComponent commentId={comment} />
                                 </div>
                             );})
                         :
                         <Typography variant="body1" color="white">
                             No comments yet
                         </Typography>
-
                     }
-                     <AddCommentComponent postId={post._id}/>
+                    <AddCommentComponent postId={post._id}/>
                 </CardContent>
             </Collapse>
+            <UpdatePostModal
+                open={updateModalOpen}
+                onClose={() => setUpdateModalOpen(false)}
+                onUpdate={handleUpdate}
+                initialContent={post.content}
+            />
         </Card>
     );
 }

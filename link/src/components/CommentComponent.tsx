@@ -1,15 +1,12 @@
-
 import { Typography, Avatar, Card } from '@mui/material';
 import CardHeader from "@mui/material/CardHeader";
 import CommentType from '../models/comment';
 import { useEffect, useState } from 'react';
 import { getCommentById, getUserById } from '../client/client';
-import getTimeAgo from '../utils/timeAgo';
 
 function CommentComponent({commentId}: {commentId: string}) {
     const [authorUsername, setAuthorUsername] = useState("");
     const [comment, setComment] = useState<CommentType>();
-
 
     useEffect(() => {
         getCommentById(commentId)
@@ -34,10 +31,6 @@ function CommentComponent({commentId}: {commentId: string}) {
             });
     }, [comment]);
 
-
-
-    const date = getTimeAgo(comment?.date!);
-
     return (
         <Card sx={{ margin: '5px', background : 'black', border: '0.5px solid grey'}}>
             <CardHeader
@@ -51,7 +44,7 @@ function CommentComponent({commentId}: {commentId: string}) {
                 title={
                     <div style={{display:"flex", flexDirection:'column', alignItems:'flex-start'}}>
                         <Typography variant="subtitle2" color="grey">
-                               @  {authorUsername}  •  {date}
+                               @  {authorUsername}
                         </Typography>
                         <Typography variant="body1" textAlign="left" sx={{ margin: '8px', color: 'white' }}>
                             {comment?.content!}
