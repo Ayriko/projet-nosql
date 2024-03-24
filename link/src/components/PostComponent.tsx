@@ -52,13 +52,13 @@ export default function PostComponent({ post }: { post: PostType }) {
                 console.error("Erreur lors de la récupération de l'utilisateur :", error);
                 setAuthorUsername("Unknown");
             });
-    }, [post.authorId]);
+    }, [post._id,]);
 
     const date = getTimeAgo(post.date);
 
     const updateLike =  async () => {
         getLike(post._id).then((response) => {
-            setLike(response.likes)
+            setLike(parseInt(response.likes))
             setIsLiked(response.users.includes(tokenPayload.id))
         })
     }
@@ -157,11 +157,15 @@ export default function PostComponent({ post }: { post: PostType }) {
                             </Typography>
                             </div>
                         </Grid>
-                        <Button type="button" onClick={handleFollow} variant="contained" color="primary" sx={{justifyContent: 'flex-end', borderRadius: '30px', marginRight: '5px', marginLeft: '5px' }}>
-                            <Typography color="white" sx={{fontSize:'12px'}}>
-                                {isFollowed ? '-' : '+' } Suivre
-                            </Typography>
-                        </Button>
+                        { post.authorId !== tokenPayload.id && (
+                          <>
+                          <Button type="button" onClick={handleFollow} variant="contained" color="primary" sx={{justifyContent: 'flex-end', borderRadius: '30px', marginRight: '5px', marginLeft: '5px' }}>
+                              <Typography color="white" sx={{fontSize:'12px'}}>
+                                  {isFollowed ? '-' : '+' } Suivre
+                              </Typography>
+                          </Button>
+                          </>
+                        )}
                     </Grid>
                 }
                 action={

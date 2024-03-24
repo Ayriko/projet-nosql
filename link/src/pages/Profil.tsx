@@ -26,7 +26,7 @@ function Profil(): React.JSX.Element {
             }
         };
         fetchPosts();
-    }, []);
+    }, [userId]);
 
     if (userId) {
         return (
