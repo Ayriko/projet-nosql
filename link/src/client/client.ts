@@ -23,7 +23,7 @@ const getUsers = async () => {
   return response.json();
 }
 
-const createUser = async (user: any) => {
+const createUser = async (user) => {
   const res = await fetch('http://localhost:3000/register', {
     method: 'post',
     headers: {'Content-Type':'application/json;charset=utf-8'},
@@ -133,6 +133,28 @@ const getLike = async (postId: string) => {
   return response.json()
 }
 
+const createPost = async (post: PostType) => {
+  const token = localStorage.getItem('Authentification')
+  if (!token) {
+    return
+  }
+
+  await fetch('http://localhost:3000/post', {
+    method: 'POST',
+    body: JSON.stringify({
+      author: '',
+      content: post.content,
+      date: post.date,
+      likes: post.likes,
+      comments: post.comments
+    }),
+    headers: {
+      'Content-type': 'application/json; charset=UTF-8',
+      'Authorization': `Bearer ${token}`
+    },
+  });
+}
+
 const getPosts = async () => {
   const response = await fetch('http://localhost:3000/posts');
   return response.json();
@@ -149,37 +171,15 @@ const getPostsByAuthorId = async (authorId: string) => {
 };
 
 const updateLikesPost = async (postId : string, likes: number) => {
-  await fetch(`http://localhost:3000/updatelikespost/${postId}`, {
+  await fetch(`http://localhost:3000/updateLikesPost/${postId}`, {
     method: 'POST',
     body: JSON.stringify({
       likes: likes
    }),
    headers: {
     'Content-type': 'application/json; charset=UTF-8'
-  },
+   },
   })
-}
-
-const createPost = async (post: PostType) => {
-  const token = localStorage.getItem('Authentification')
-  if (!token) {
-    return
-  }
-
-  await fetch('http://localhost:3000/post', {
-    method: 'POST',
-    body: JSON.stringify({
-      author: '',
-      content: post.content,
-      date: post.date,
-      likes: post.likes,
-      comments: post.comments
-   }),
-   headers: {
-    'Content-type': 'application/json; charset=UTF-8',
-    'Authorization': `Bearer ${token}`
-  },
-  });
 }
 
 const getFollowedAccount = async (meId: string ) => {

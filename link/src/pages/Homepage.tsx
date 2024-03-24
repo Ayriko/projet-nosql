@@ -22,9 +22,6 @@ function Homepage(): React.JSX.Element {
         fetchPosts();
     }, []);
 
-
-
-
     return (
         <div>
             <Navbar/>
