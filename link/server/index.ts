@@ -477,7 +477,6 @@ app.post('/updateLikesPost/:id', async (req, res) =>  {
 app.post('/comment', (req, res) => {
   const comment = new Comment({
     author: req.body.author,
-    date: req.body.date,
     content: req.body.content,
     postId: req.body.postId
   });

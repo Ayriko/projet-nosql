@@ -261,7 +261,6 @@ const createComment = async (comment: CommentType) => {
     body: JSON.stringify({
       author: tokenPayload.id,
       content: comment.content,
-      date: comment.date,
       postId: comment.postId
    }),
    headers: {
@@ -296,7 +295,6 @@ const getCommentById = async (id: string) => {
   const comment : CommentType = {
     id: commentData.id,
     author: commentData.author,
-    date: commentData.date,
     content: commentData.content,
     postId: commentData.postId
   }

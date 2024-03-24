@@ -20,7 +20,7 @@ function Homepage(): React.JSX.Element {
             }
         };
         fetchPosts();
-    }, []);
+    }, [posts]);
 
     return (
         <div>
