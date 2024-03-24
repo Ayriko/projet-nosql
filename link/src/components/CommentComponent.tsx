@@ -11,7 +11,8 @@ function CommentComponent({commentId}: {commentId: string}) {
     useEffect(() => {
         getCommentById(commentId)
             .then(comment => {
-                return setComment(comment);
+              setComment(comment);
+              getAuthorByComment(comment.author)
             })
             .catch(error => {
                 console.error("Erreur lors de la récupération du commentaire :", error);
@@ -19,17 +20,15 @@ function CommentComponent({commentId}: {commentId: string}) {
             });
     }, []);
 
-
-    useEffect(() => {
-        getUserById(comment?.author!)
-            .then(user => {
-                setAuthorUsername(user.username);
-            })
-            .catch(error => {
-                console.error("Erreur lors de la récupération de l'utilisateur :", error);
-                setAuthorUsername("Unknown");
-            });
-    }, [comment]);
+    const getAuthorByComment = (commentAuthorId: string) => {
+      getUserById(commentAuthorId)
+    .then(user => {
+      setAuthorUsername(user.username);
+    })
+    .catch(error => {
+      console.error("Erreur lors de la récupération de l'utilisateur :", error);
+      setAuthorUsername("Unknown");
+    });}
 
     return (
         <Card sx={{ margin: '5px', background : 'black', border: '0.5px solid grey'}}>

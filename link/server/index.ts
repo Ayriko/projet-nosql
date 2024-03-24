@@ -189,7 +189,6 @@ app.post('/dislike', async (req, res) => {
         res.send()
     })
   } catch (e) {
-    console.log('poeut3', e)
     throw e
   }
 });
@@ -441,7 +440,7 @@ app.post('/addCommentToPost/:id', async (req, res) =>  {
     );
 
   // Mettre à jour le cache Redis avec le post mis à jour
-  redis.set(`post:${updatedPost._id}`, JSON.stringify(updatedPost), (err, result) => {
+  redis.set(`post:${id}`, JSON.stringify(updatedPost), (err, result) => {
     if (err) {
       console.error('Error updating post in Redis:', err);
     }
@@ -462,7 +461,7 @@ app.post('/updateLikesPost/:id', async (req, res) =>  {
     { new: true }
   );
 
-  redis.set(`post:${updatedPost._id}`, JSON.stringify(updatedPost), (err, result) => {
+  redis.set(`post:${id}`, JSON.stringify(updatedPost), (err, result) => {
     if (err) {
       console.error('Error updating post in Redis:', err);
     }

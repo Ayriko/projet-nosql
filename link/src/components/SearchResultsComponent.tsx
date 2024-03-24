@@ -6,7 +6,7 @@ const SearchResultsComponent = () => {
     const { searchBarResult } = useSearchBarContext();
 
     return (
-        <div style={{border:'0.5px solid grey', position:'fixed', top:'50px', left:'100px', borderRadius:'5px'}}>
+        <div style={{border:'0.5px solid grey', position:'fixed', top:'50px', left:'100px', borderRadius:'5px', backgroundColor: 'black', zIndex: '999'}}>
         {searchBarResult.map((result, index) => {
         return (
             <div key={index} style={{borderTop:'0.5px solid grey'}}>
@@ -17,10 +17,7 @@ const SearchResultsComponent = () => {
         );
         })}
     </div>
-
     );
-     
-    
 };
 
 export default SearchResultsComponent;

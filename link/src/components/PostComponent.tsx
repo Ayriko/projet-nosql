@@ -208,7 +208,7 @@ export default function PostComponent({ post }: { post: PostType }) {
             <Collapse in={expanded} timeout="auto" unmountOnExit>
                 <CardContent>
                     {post.comments.length > 0 ?
-                        post.comments.slice().reverse().map((comment: string, index: number) => {
+                        post.comments.map((comment: string, index: number) => {
                             return (
                                 <div key={index}>
                                     <CommentComponent commentId={comment} />
