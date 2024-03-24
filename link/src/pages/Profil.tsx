@@ -11,8 +11,6 @@ function Profil(): React.JSX.Element {
     const navigate = useNavigate();
     const { userId } = useParams();
 
-    console.log(userId);
-
     useEffect(() => {
         const fetchPosts = async () => {
             try {
@@ -29,8 +27,6 @@ function Profil(): React.JSX.Element {
         };
         fetchPosts();
     }, []);
-
-    console.log(posts);
 
     if (userId) {
         return (

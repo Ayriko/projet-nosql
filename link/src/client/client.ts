@@ -41,6 +41,57 @@ const loginClient = async (user) => {
   return res.json()
 }
 
+const likePost = async (data: string) => {
+  try {
+    await fetch('http://localhost:3000/like', {
+      method: 'post',
+      headers: {'Content-Type':'application/json;charset=utf-8'},
+      body: data
+    })
+  } catch (e) {
+    console.log(e)
+
+  }
+}
+
+const follow = async (authorId: string, meId: string) => {
+  try {
+    const data = JSON.stringify({authorId: authorId, meId: meId})
+    await fetch('http://localhost:3000/follow', {
+      method: 'post',
+      headers: {'Content-Type':'application/json;charset=utf-8'},
+      body: data
+    })
+  } catch (e) {
+    console.log(e)
+  }
+}
+
+const unFollow = async (authorId: string, meId: string) => {
+  try {
+    const data = JSON.stringify({authorId: authorId, meId: meId})
+    await fetch('http://localhost:3000/unFollow', {
+      method: 'post',
+      headers: {'Content-Type':'application/json;charset=utf-8'},
+      body: data
+    })
+  } catch (e) {
+    console.log(e)
+  }
+}
+
+const dislikePost = async (data: string) => {
+  try {
+    await fetch('http://localhost:3000/dislike', {
+      method: 'post',
+      headers: {'Content-Type':'application/json;charset=utf-8'},
+      body: data
+    })
+  } catch (e) {
+    console.log('pouet2', e)
+  }
+}
+
 const searchUsers = async (searchTerm : string) => {
   const userList = await getUsers();
   const filteredUsers = userList.filter((user: { username: string; })  => {
@@ -52,8 +103,6 @@ const searchUsers = async (searchTerm : string) => {
   filteredUsers.map((user: UserType) => {
     results.push({username: user.username, id: user._id});
   });
-
-
 
   return results;
 }
@@ -75,7 +124,14 @@ const getUserById = async (id: string) => {
   });
 }
 
+const getLike = async (postId: string) => {
+  const response = await fetch(`http://localhost:3000/like/${postId}`,
+    {
+      method: 'GET',
+    });
 
+  return response.json()
+}
 
 const getPosts = async () => {
   const response = await fetch('http://localhost:3000/posts');
@@ -126,6 +182,39 @@ const createPost = async (post: PostType) => {
   });
 }
 
+const getFollowedAccount = async (meId: string ) => {
+  const response  = await fetch(`http://localhost:3000/getFollowed/${meId}`, {
+    method: 'GET',
+    headers: {
+      'Content-type': 'application/json; charset=UTF-8'
+    },
+  })
+
+  return response.json()
+}
+
+const getFollowerAccount = async (meId: string ) => {
+  const response  = await fetch(`http://localhost:3000/getFollower/${meId}`, {
+    method: 'GET',
+    headers: {
+      'Content-type': 'application/json; charset=UTF-8'
+    },
+  })
+
+  return response.json()
+}
+
+const getRecommendationAccount = async (meId: string ) => {
+  const response  = await fetch(`http://localhost:3000/getRecommendation/${meId}`, {
+    method: 'GET',
+    headers: {
+      'Content-type': 'application/json; charset=UTF-8'
+    },
+  })
+
+  return response.json()
+}
+
 const createComment = async (comment: CommentType) => {
   const tokenPayload = decodeToken()
 
@@ -152,7 +241,7 @@ const createComment = async (comment: CommentType) => {
 }
 
 const addCommentToPost = async (commentId: string, postId : string) => {
-  await fetch(`http://localhost:3000/addcommenttopost/${postId}`, {
+  await fetch(`http://localhost:3000/addCommentToPost/${postId}`, {
     method: 'POST',
     body: JSON.stringify({
       commentId: commentId
@@ -176,10 +265,26 @@ const getCommentById = async (id: string) => {
   return comment;
 }
 
-
-
-
-
-
-export { decodeToken, getUsers, getUserById, getPosts, createPost, createComment, getCommentById, searchUsers, getPostsByAuthorId, createUser, updateLikesPost, loginClient };
+export {
+  follow,
+  likePost,
+  dislikePost,
+  decodeToken,
+  getLike,
+  getFollowedAccount,
+  getFollowerAccount,
+  getRecommendationAccount,
+  getUsers,
+  getUserById,
+  getPosts,
+  createPost,
+  createComment,
+  getCommentById,
+  searchUsers,
+  getPostsByAuthorId,
+  createUser,
+  unFollow,
+  updateLikesPost,
+  loginClient
+};
 

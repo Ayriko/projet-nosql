@@ -22,3 +22,7 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+
+docker/link
+docker/neodata
+docker/redisinsight

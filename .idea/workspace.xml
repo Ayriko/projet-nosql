@@ -5,12 +5,13 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="8aaec906-6bfe-48a3-8480-ab29cb32f21d" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/link/src/components/FollowerModal.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/link/server/index.ts" beforeDir="false" afterPath="$PROJECT_DIR$/link/server/index.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/link/src/client/client.ts" beforeDir="false" afterPath="$PROJECT_DIR$/link/src/client/client.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/link/src/components/Navbar.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/link/src/components/Navbar.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/link/src/components/SignIn.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/link/src/components/SignIn.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/link/src/components/SignUp.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/link/src/components/SignUp.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/link/src/components/PostComponent.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/link/src/components/PostComponent.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/link/src/components/ProfileComponent.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/link/src/components/ProfileComponent.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/link/src/pages/Profil.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/link/src/pages/Profil.tsx" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -44,7 +45,7 @@
     &quot;ReactCreateComponentLastSelected&quot;: &quot;functionDeclarationComponent&quot;,
     &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
     &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;main&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;feature/setup-neo4j-an-test-query&quot;,
     &quot;last_opened_file_path&quot;: &quot;/home/ayriko/Bureau/nosql/projet-nosql&quot;,
     &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
     &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
@@ -88,6 +89,12 @@
       <workItem from="1710771066640" duration="43000" />
       <workItem from="1710771407429" duration="1628000" />
       <workItem from="1710924680659" duration="6038000" />
+      <workItem from="1710946527041" duration="3260000" />
+      <workItem from="1711199041575" duration="4837000" />
+      <workItem from="1711278607854" duration="2278000" />
+      <workItem from="1711281146043" duration="3262000" />
+      <workItem from="1711285050982" duration="12313000" />
+      <workItem from="1711300416059" duration="2777000" />
     </task>
     <servers />
   </component>
