@@ -10,9 +10,16 @@ import Typography from '@mui/material/Typography';
 import FavoriteOutlineIcon from '@mui/icons-material/Favorite';
 import ChatBubbleOutlineIcon from '@mui/icons-material/ChatBubbleOutline';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
-import { Divider } from '@mui/material';
+import {Button, Divider} from '@mui/material';
 import PostType from '../models/post';
-import {decodeToken, getUserById, test, updateLikesPost} from '../client/client';
+import {
+    decodeToken,
+    dislikePost, follow,
+    getFollowedAccount,
+    getLike,
+    getUserById,
+    likePost, unFollow
+} from '../client/client';
 import { useEffect, useState } from 'react';
 import { Grid, Menu, MenuItem } from '@mui/material';
 import CommentComponent from './CommentComponent.tsx';
@@ -30,11 +37,17 @@ export default function PostComponent({post}: {post: PostType}) {
     const [anchorEl, setAnchorEl] = React.useState(null);
     const [authorUsername, setAuthorUsername] = useState("");
     const [isLiked, setIsLiked] = useState(false);
+    const [like, setLike] = useState(0);
+    const [isFollowed, setIsFollowed] = useState(false)
+
+    const tokenPayload = decodeToken()
 
     useEffect(() => {
         getUserById(post.authorId)
-            .then(user => {
+            .then( async (user) => {
                 setAuthorUsername(user.username);
+                await updateLike()
+                await updateFollowed()
             })
             .catch(error => {
                 console.error("Erreur lors de la récupération de l'utilisateur :", error);
@@ -43,6 +56,19 @@ export default function PostComponent({post}: {post: PostType}) {
     }, [post.authorId]);
 
     const date = getTimeAgo(post.date);
+
+    const updateLike =  async () => {
+        getLike(post._id).then((response) => {
+            setLike(response.likes)
+            setIsLiked(response.users.includes(tokenPayload.id))
+        })
+    }
+
+    const updateFollowed = async () => {
+        getFollowedAccount(tokenPayload.id).then((response) => {
+            setIsFollowed(response.users.includes(post.authorId))
+        })
+    }
 
     const handleExpandClick = () => {
         setExpanded(!expanded);
@@ -56,17 +82,33 @@ export default function PostComponent({post}: {post: PostType}) {
         setAnchorEl(null);
     };
 
-    const handleLike = () => {
-        const tokenPayload = decodeToken()
-
-        test(JSON.stringify({postId: post._id, meId: tokenPayload.id}))
+    const handleLike = async () => {
         setIsLiked(!isLiked);
-        if (isLiked) {
-            post.likes -= 1;
-        } else {
-            post.likes += 1;
+        try {
+            if (isLiked) {
+                await dislikePost(JSON.stringify({postId: post._id, meId: tokenPayload.id}))
+            } else {
+                await likePost(JSON.stringify({postId: post._id, meId: tokenPayload.id}))
+            }
+            await updateLike();
+        }catch (e) {
+            setIsLiked(!isLiked);
+            console.log('error', e)
         }
-        updateLikesPost(post._id, post.likes);
+    }
+
+    const handleFollow = async () => {
+        try {
+            if (isFollowed) {
+                await unFollow(post.authorId, tokenPayload.id)
+            } else {
+                await follow(post.authorId, tokenPayload.id)
+            }
+            await updateFollowed();
+        }catch (e) {
+            setIsLiked(!isLiked);
+            console.log('error', e)
+        }
     }
 
     return (
@@ -84,10 +126,17 @@ export default function PostComponent({post}: {post: PostType}) {
                 title={
                     <Grid container justifyContent="space-between">
                         <Grid item>
+                            <div>
                             <Typography variant="subtitle2" color="grey">
                                @  {authorUsername}  •  {date}
                             </Typography>
+                            </div>
                         </Grid>
+                        <Button type="button" onClick={handleFollow} variant="contained" color="primary" sx={{justifyContent: 'flex-end', borderRadius: '30px', marginRight: '5px', marginLeft: '5px' }}>
+                            <Typography color="white" sx={{fontSize:'12px'}}>
+                                {isFollowed ? '-' : '+' } Suivre
+                            </Typography>
+                        </Button>
                     </Grid>
                 }
                 action={
@@ -116,7 +165,7 @@ export default function PostComponent({post}: {post: PostType}) {
                     <FavoriteOutlineIcon />
                 </IconButton>
                 <Typography color="white">
-                    {post.likes} likes
+                    {like} likes
                 </Typography>
                 <IconButton
                     aria-label="comment"
@@ -144,7 +193,6 @@ export default function PostComponent({post}: {post: PostType}) {
                         </Typography>
 
                     }
-
                      <AddCommentComponent postId={post._id}/>
                 </CardContent>
             </Collapse>
