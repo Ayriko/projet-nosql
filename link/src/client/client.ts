@@ -93,6 +93,7 @@ const dislikePost = async (data: string) => {
 }
 
 const searchUsers = async (searchTerm : string) => {
+  console.log('searchterm', searchTerm)
   const userList = await getUsers();
   const filteredUsers = userList.filter((user: { username: string; })  => {
       return user.username.toLowerCase().includes(searchTerm.toLowerCase());
@@ -254,12 +255,10 @@ const deletePost = async (postId: string) => {
 
 
 const createComment = async (comment: CommentType) => {
-  const tokenPayload = decodeToken()
-
   const response  = await fetch('http://localhost:3000/comment', {
     method: 'POST',
     body: JSON.stringify({
-      author: tokenPayload.id,
+      author: comment.author,
       content: comment.content,
       postId: comment.postId
    }),
@@ -268,6 +267,7 @@ const createComment = async (comment: CommentType) => {
   },
   });
   const createdComment = await response.json();
+  console.log(createdComment._id)
 
   try {
     await addCommentToPost(createdComment._id, createdComment.postId);

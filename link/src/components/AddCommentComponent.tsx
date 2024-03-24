@@ -1,12 +1,13 @@
 import React from 'react';
 import { Button,Typography, Avatar, Card } from '@mui/material';
 import CommentType from '../models/comment';
-import { createComment } from '../client/client';
+import {createComment, decodeToken} from '../client/client';
 import { useUserContext } from '../contexts/UserContext';
 
 function AddCommentComponent({postId } : {postId : string}): React.JSX.Element {
 
     const { user } = useUserContext();
+    const tokenPayload = decodeToken()
 
     const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
@@ -15,7 +16,7 @@ function AddCommentComponent({postId } : {postId : string}): React.JSX.Element {
 
         const newComment : CommentType = {
             id: "",
-            author: '65ef0ca6a2f5fd42b4e4be75',
+            author: tokenPayload.id,
             postId: postId,
             content: commentContent.value,
         }

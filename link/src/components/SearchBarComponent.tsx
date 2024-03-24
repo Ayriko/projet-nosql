@@ -6,12 +6,11 @@ import { useSearchBarContext } from '../contexts/SearchBarContext';
 const SearchBarComponent = () => {
   const [searchTerm, setSearchTerm] = useState('');
 
-
   const { setSearchBarResult } = useSearchBarContext();
 
   const handleChange = async (event: { target: { value: SetStateAction<string>; }; }) => {
-    setSearchTerm(event.target.value);
-    const results = await searchUsers(searchTerm);
+    setSearchTerm(event.target.value.toString());
+    const results = await searchUsers(event.target.value.toString());
     setSearchBarResult(results);
   };
 
