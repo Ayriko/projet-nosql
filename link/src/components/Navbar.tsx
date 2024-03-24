@@ -80,7 +80,7 @@ export default function Navbar() {
             open={isMenuOpen}
             onClose={handleMenuClose}
         >
-            <MenuItem onClick={handleMenuClose}><Link to={"/login"} style={linkStyle2}>Login</Link></MenuItem>
+            {/*<MenuItem onClick={handleMenuClose}><Link to={"/login"} style={linkStyle2}>Login</Link></MenuItem>*/}
             <MenuItem onClick={handleMenuClose}><Link to={`/profil/${meId}`} style={linkStyle2}>Profil</Link></MenuItem>
             <MenuItem onClick={logout}>Logout</MenuItem>
         </Menu>

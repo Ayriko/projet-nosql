@@ -372,6 +372,63 @@ app.get('/post/:id', (req, res) => {
   });
 });
 
+app.put('/post/:id', (req, res) => {
+  const postId = req.params.id;
+  const updatedPost = req.body;
+
+  Post.findByIdAndUpdate(postId, updatedPost, { new: true })
+      .then((post) => {
+        if (!post) {
+          res.status(404).send({ message: 'Post not found' });
+        } else {
+          redis.set(`post:${post._id}`, JSON.stringify(post), (err, result) => {
+            if (err) {
+              console.error('Error updating post in Redis:', err);
+            }
+            console.log('Post updated in Redis:', result);
+          });
+
+          res.send(post);
+        }
+      })
+      .catch((error) => {
+        console.error('Error updating post:', error);
+        res.status(500).send({ message: 'Error updating post' });
+      });
+});
+
+app.delete('/post/:id', (req, res) => {
+  const postId = req.params.id;
+
+  Post.findByIdAndDelete(postId)
+      .then((post) => {
+        if (!post) {
+          res.status(404).send({ message: 'Post not found' });
+        } else {
+          redis.del(`post:${post._id}`, (err, result) => {
+            if (err) {
+              console.error('Error deleting post from Redis:', err);
+            }
+            console.log('Post deleted from Redis:', result);
+          });
+
+          // Remove the post key from the Post Set
+          redis.srem('posts:keys', `post:${post._id}`, (err, result) => {
+            if (err) {
+              console.error('Error removing post key from Redis Set:', err);
+            }
+            console.log('Post key removed from Post Set:', result);
+          });
+
+          res.send({ message: 'Post deleted successfully' });
+        }
+      })
+      .catch((error) => {
+        console.error('Error deleting post:', error);
+        res.status(500).send({ message: 'Error deleting post' });
+      });
+});
+
 
 app.post('/addCommentToPost/:id', async (req, res) =>  {
     const id = req.params.id;
