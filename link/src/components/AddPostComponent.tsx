@@ -20,7 +20,7 @@ function AddPostComponent(): React.JSX.Element {
         const newPost : PostType = {
             _id: '',
             authorId: '',
-            date: new Date().toDateString(),
+            date: new Date().toLocaleString(),
             content: postContent.value,
             likes: 0,
             comments: []
