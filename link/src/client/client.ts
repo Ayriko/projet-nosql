@@ -19,7 +19,10 @@ const decodeToken = () => {
 }
 
 const getUsers = async () => {
-  const response = await fetch('http://localhost:3000/users');
+  const response = await fetch('http://localhost:3000/users', {
+      headers: {
+        'Authorization': `Bearer ${localStorage.getItem('Authentification')}`
+      }});
   return response.json();
 }
 
@@ -45,7 +48,10 @@ const likePost = async (data: string) => {
   try {
     await fetch('http://localhost:3000/like', {
       method: 'post',
-      headers: {'Content-Type':'application/json;charset=utf-8'},
+      headers: {
+        'Content-Type':'application/json;charset=utf-8',
+        'Authorization': `Bearer ${localStorage.getItem('Authentification')}`
+      },
       body: data
     })
   } catch (e) {
@@ -59,7 +65,10 @@ const follow = async (authorId: string, meId: string) => {
     const data = JSON.stringify({authorId: authorId, meId: meId})
     await fetch('http://localhost:3000/follow', {
       method: 'post',
-      headers: {'Content-Type':'application/json;charset=utf-8'},
+      headers: {
+        'Content-Type':'application/json;charset=utf-8',
+        'Authorization': `Bearer ${localStorage.getItem('Authentification')}`
+      },
       body: data
     })
   } catch (e) {
@@ -72,7 +81,10 @@ const unFollow = async (authorId: string, meId: string) => {
     const data = JSON.stringify({authorId: authorId, meId: meId})
     await fetch('http://localhost:3000/unFollow', {
       method: 'post',
-      headers: {'Content-Type':'application/json;charset=utf-8'},
+      headers: {
+        'Content-Type':'application/json;charset=utf-8',
+        'Authorization': `Bearer ${localStorage.getItem('Authentification')}`
+      },
       body: data
     })
   } catch (e) {
@@ -84,7 +96,10 @@ const dislikePost = async (data: string) => {
   try {
     await fetch('http://localhost:3000/dislike', {
       method: 'post',
-      headers: {'Content-Type':'application/json;charset=utf-8'},
+      headers: {
+        'Content-Type':'application/json;charset=utf-8',
+        'Authorization': `Bearer ${localStorage.getItem('Authentification')}`
+      },
       body: data
     })
   } catch (e) {
@@ -93,7 +108,6 @@ const dislikePost = async (data: string) => {
 }
 
 const searchUsers = async (searchTerm : string) => {
-  console.log('searchterm', searchTerm)
   const userList = await getUsers();
   const filteredUsers = userList.filter((user: { username: string; })  => {
       return user.username.toLowerCase().includes(searchTerm.toLowerCase());
@@ -129,6 +143,10 @@ const getLike = async (postId: string) => {
   const response = await fetch(`http://localhost:3000/like/${postId}`,
     {
       method: 'GET',
+      headers: {
+        'Content-type': 'application/json; charset=UTF-8',
+        'Authorization': `Bearer ${localStorage.getItem('Authentification')}`
+      },
     });
 
   return response.json()
@@ -157,7 +175,11 @@ const createPost = async (post: PostType) => {
 }
 
 const getPosts = async () => {
-  const response = await fetch('http://localhost:3000/posts');
+  const response = await fetch('http://localhost:3000/posts', {
+    headers: {
+      'Authorization': `Bearer ${localStorage.getItem('Authentification')}`
+    }
+  });
   return response.json();
 }
 
@@ -171,23 +193,12 @@ const getPostsByAuthorId = async (authorId: string) => {
   }
 };
 
-const updateLikesPost = async (postId : string, likes: number) => {
-  await fetch(`http://localhost:3000/updateLikesPost/${postId}`, {
-    method: 'POST',
-    body: JSON.stringify({
-      likes: likes
-   }),
-   headers: {
-    'Content-type': 'application/json; charset=UTF-8'
-   },
-  })
-}
-
 const getFollowedAccount = async (meId: string ) => {
   const response  = await fetch(`http://localhost:3000/getFollowed/${meId}`, {
     method: 'GET',
     headers: {
-      'Content-type': 'application/json; charset=UTF-8'
+      'Content-type': 'application/json; charset=UTF-8',
+      'Authorization': `Bearer ${localStorage.getItem('Authentification')}`
     },
   })
 
@@ -198,7 +209,9 @@ const getFollowerAccount = async (meId: string ) => {
   const response  = await fetch(`http://localhost:3000/getFollower/${meId}`, {
     method: 'GET',
     headers: {
-      'Content-type': 'application/json; charset=UTF-8'
+      'Content-type': 'application/json; charset=UTF-8',
+      'Authorization': `Bearer ${localStorage.getItem('Authentification')}`
+
     },
   })
 
@@ -209,7 +222,8 @@ const getRecommendationAccount = async (meId: string ) => {
   const response  = await fetch(`http://localhost:3000/getRecommendation/${meId}`, {
     method: 'GET',
     headers: {
-      'Content-type': 'application/json; charset=UTF-8'
+      'Content-type': 'application/json; charset=UTF-8',
+      'Authorization': `Bearer ${localStorage.getItem('Authentification')}`
     },
   })
 
@@ -222,6 +236,7 @@ const updatePost = async (postId: string, content: string) => {
       method: 'PUT',
       headers: {
         'Content-Type': 'application/json',
+        'Authorization': `Bearer ${localStorage.getItem('Authentification')}`
       },
       body: JSON.stringify({ content }),
     });
@@ -242,6 +257,7 @@ const deletePost = async (postId: string) => {
       method: 'DELETE',
       headers: {
         'Content-Type': 'application/json',
+        'Authorization': `Bearer ${localStorage.getItem('Authentification')}`
       },
     });
     if (!response.ok) {
@@ -263,8 +279,9 @@ const createComment = async (comment: CommentType) => {
       postId: comment.postId
    }),
    headers: {
-    'Content-type': 'application/json; charset=UTF-8'
-  },
+    'Content-type': 'application/json; charset=UTF-8',
+     'Authorization': `Bearer ${localStorage.getItem('Authentification')}`
+   },
   });
   const createdComment = await response.json();
   console.log(createdComment._id)
@@ -284,13 +301,16 @@ const addCommentToPost = async (commentId: string, postId : string) => {
       commentId: commentId
    }),
    headers: {
-    'Content-type': 'application/json; charset=UTF-8'
-  },
+    'Content-type': 'application/json; charset=UTF-8',
+     'Authorization': `Bearer ${localStorage.getItem('Authentification')}`
+   },
   })
 }
 
 const getCommentById = async (id: string) => {
-  const response = await fetch(`http://localhost:3000/comment/${id}`);
+  const response = await fetch(`http://localhost:3000/comment/${id}`, {
+    headers: {'Authorization': `Bearer ${localStorage.getItem('Authentification')}`}
+});
   const commentData = await response.json();
   const comment : CommentType = {
     id: commentData.id,
@@ -320,7 +340,6 @@ export {
   getPostsByAuthorId,
   createUser,
   unFollow,
-  updateLikesPost,
   loginClient,
   deletePost,
   updatePost,

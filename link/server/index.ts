@@ -31,7 +31,13 @@ app.get('/', (_, res) => {
   res.send('Hello World!');
 });
 
-app.get('/users', (_, res) => {
+app.get('/users', (req, res) => {
+  const bearerAuth = req.headers.authorization;
+  if (!bearerAuth) {
+    res.send(201)
+    throw new Error('No connection')
+  }
+
   User.find()
     .then((users) => {
       res.send(users);
@@ -40,6 +46,12 @@ app.get('/users', (_, res) => {
 });
 
 app.get('/user/:id', (req, res) => {
+  const bearerAuth = req.headers.authorization;
+  if (!bearerAuth) {
+    res.send(201)
+    throw new Error('No connection')
+  }
+
   const id = req.params.id;
   User.findById(id)
     .then((user) => {
@@ -69,6 +81,12 @@ app.post('/login', (req, res) => {
 })
 
 app.post('/like', async (req, res) => {
+  const bearerAuth = req.headers.authorization;
+  if (!bearerAuth) {
+    res.send(201)
+    throw new Error('No connection')
+  }
+
   try {
     await session.run(`
       MATCH (a:User {id: $meId}), (b:Post {id: $postId})
@@ -87,6 +105,12 @@ app.post('/like', async (req, res) => {
 });
 
 app.post('/follow', async (req, res) => {
+  const bearerAuth = req.headers.authorization;
+  if (!bearerAuth) {
+    res.send(201)
+    throw new Error('No connection')
+  }
+
   try {
     await session.run(`
       MATCH (a:User {id: $meId}), (b:User {id: $authorId})
@@ -105,6 +129,12 @@ app.post('/follow', async (req, res) => {
 });
 
 app.post('/unFollow', async (req, res) => {
+  const bearerAuth = req.headers.authorization;
+  if (!bearerAuth) {
+    res.send(201)
+    throw new Error('No connection')
+  }
+
   try {
     await session.run(`
       MATCH (a:User {id: $meId})-[r:FOLLOW]->(b:User {id: $authorId})
@@ -123,6 +153,12 @@ app.post('/unFollow', async (req, res) => {
 });
 
 app.get('/getFollowed/:id', async (req, res) => {
+  const bearerAuth = req.headers.authorization;
+  if (!bearerAuth) {
+    res.send(201)
+    throw new Error('No connection')
+  }
+
   const id = req.params.id;
   const newSession = driver.session();
   await newSession.run(
@@ -140,6 +176,12 @@ app.get('/getFollowed/:id', async (req, res) => {
 });
 
 app.get('/getFollower/:id', async (req, res) => {
+  const bearerAuth = req.headers.authorization;
+  if (!bearerAuth) {
+    res.send(201)
+    throw new Error('No connection')
+  }
+
   const id = req.params.id;
   const newSession = driver.session();
   await newSession.run(
@@ -157,6 +199,12 @@ app.get('/getFollower/:id', async (req, res) => {
 });
 
 app.get('/getRecommendation/:id', async (req, res) => {
+  const bearerAuth = req.headers.authorization;
+  if (!bearerAuth) {
+    res.send(201)
+    throw new Error('No connection')
+  }
+
   const id = req.params.id;
   const newSession = driver.session();
   await newSession.run(
@@ -177,6 +225,12 @@ app.get('/getRecommendation/:id', async (req, res) => {
 });
 
 app.post('/dislike', async (req, res) => {
+  const bearerAuth = req.headers.authorization;
+  if (!bearerAuth) {
+    res.send(201)
+    throw new Error('No connection')
+  }
+
   try {
     await session.run(`
       MATCH (u:User {id: $meId})-[r:A_LIKE]->(p:Post {id: $postId})
@@ -194,6 +248,12 @@ app.post('/dislike', async (req, res) => {
 });
 
 app.get('/like/:id', async (req, res) => {
+  const bearerAuth = req.headers.authorization;
+  if (!bearerAuth) {
+    res.send(201)
+    throw new Error('No connection')
+  }
+
   const id = req.params.id;
   const newSession = driver.session();
   await newSession.run(
@@ -233,6 +293,7 @@ app.post('/register',  async (req, res) => {
 app.post('/post', (req, res) => {
   const bearerAuth = req.headers.authorization;
   if (!bearerAuth) {
+    res.send(201)
     throw new Error('No connection')
   }
 
@@ -273,7 +334,13 @@ app.post('/post', (req, res) => {
     .catch((error) => console.error('Error creating post:', error));
 });
 
-app.get('/posts', (_, res) => {
+app.get('/posts', (req, res) => {
+  const bearerAuth = req.headers.authorization;
+  if (!bearerAuth) {
+    res.send(201)
+    throw new Error('No connection')
+  }
+
   // on récupère les clés des posts stockés dans le set
   redis.smembers('posts:keys', (err, keys) => {
     if (err || keys.length === 0) {
@@ -332,6 +399,12 @@ app.get('/posts', (_, res) => {
 });
 
 app.get('/post/:id', (req, res) => {
+  const bearerAuth = req.headers.authorization;
+  if (!bearerAuth) {
+    res.send(201)
+    throw new Error('No connection')
+  }
+
   const postId = req.params.id;
 
   // Check if the post is available in the cache
@@ -372,6 +445,12 @@ app.get('/post/:id', (req, res) => {
 });
 
 app.put('/post/:id', (req, res) => {
+  const bearerAuth = req.headers.authorization;
+  if (!bearerAuth) {
+    res.send(201)
+    throw new Error('No connection')
+  }
+
   const postId = req.params.id;
   const updatedPost = req.body;
 
@@ -397,6 +476,12 @@ app.put('/post/:id', (req, res) => {
 });
 
 app.delete('/post/:id', (req, res) => {
+  const bearerAuth = req.headers.authorization;
+  if (!bearerAuth) {
+    res.send(201)
+    throw new Error('No connection')
+  }
+
   const postId = req.params.id;
 
   Post.findByIdAndDelete(postId)
@@ -418,6 +503,17 @@ app.delete('/post/:id', (req, res) => {
             }
             console.log('Post key removed from Post Set:', result);
           });
+          session.run(
+          `
+            MATCH (a:User)-[r:A_LIKE]->(b:Post {id: $postId})
+            DELETE r
+            WITH b
+            MATCH (a:User {id: $authorId})-[r:A_POSTE]->(b:Post {id: $postId})
+            DELETE r, b;
+          `,
+            {
+              postId: post._id,
+            })
 
           res.send({ message: 'Post deleted successfully' });
         }
@@ -430,7 +526,13 @@ app.delete('/post/:id', (req, res) => {
 
 
 app.post('/addCommentToPost/:id', async (req, res) =>  {
-    const id = req.params.id;
+  const bearerAuth = req.headers.authorization;
+  if (!bearerAuth) {
+    res.send(201)
+    throw new Error('No connection')
+  }
+
+  const id = req.params.id;
     const updatedPost = await Post.findOneAndUpdate(
       { _id: id },
       {
@@ -451,6 +553,12 @@ app.post('/addCommentToPost/:id', async (req, res) =>  {
 });
 
 app.post('/updateLikesPost/:id', async (req, res) =>  {
+  const bearerAuth = req.headers.authorization;
+  if (!bearerAuth) {
+    res.send(201)
+    throw new Error('No connection')
+  }
+
   const id = req.params.id;
   const postLikes = req.body.likes;
   const updatedPost = await Post.findOneAndUpdate(
@@ -474,6 +582,12 @@ app.post('/updateLikesPost/:id', async (req, res) =>  {
 
 // COMMENTS
 app.post('/comment', (req, res) => {
+  const bearerAuth = req.headers.authorization;
+  if (!bearerAuth) {
+    res.send(201)
+    throw new Error('No connection')
+  }
+
   const comment = new Comment({
     author: req.body.author,
     content: req.body.content,
@@ -493,6 +607,12 @@ app.post('/comment', (req, res) => {
 });
 
 app.get('/comment/:id', (req, res) => {
+  const bearerAuth = req.headers.authorization;
+  if (!bearerAuth) {
+    res.send(201)
+    throw new Error('No connection')
+  }
+
   const commentId = req.params.id;
 
   redis.get(`comment:${commentId}`, (err, result) => {
