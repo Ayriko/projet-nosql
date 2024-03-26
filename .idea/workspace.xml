@@ -5,9 +5,9 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="8aaec906-6bfe-48a3-8480-ab29cb32f21d" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/link/docker/setupNeo4jPassword.cypher" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/link/docker/docker-compose.yml" beforeDir="false" afterPath="$PROJECT_DIR$/link/docker/docker-compose.yml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/link/server/index.ts" beforeDir="false" afterPath="$PROJECT_DIR$/link/server/index.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/link/src/client/client.ts" beforeDir="false" afterPath="$PROJECT_DIR$/link/src/client/client.ts" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
